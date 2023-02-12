@@ -5,7 +5,19 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<IBufferedFileUploadService, BufferedFileUploadLocalService>();
 
+//=== ADDs Access ===//
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(option =>
+{
+    option.IdleTimeout = TimeSpan.FromMinutes(10);
+});
+//====================//
+
 var app = builder.Build();
+
+//=== ADDs Access ===//
+app.UseSession();
+//====================//
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
