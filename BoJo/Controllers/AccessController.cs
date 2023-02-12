@@ -16,9 +16,10 @@ namespace BoJo.Controllers
         //======== Database connection string and Session ======/
         public static ISession cSession;
         public static User current_user = new BoJo.Models.User();
-        public static string DBAdd = "Server=(localdb)\\MSSQLLocalDB;Database=BOJO_DB;Trusted_Connection=True;MultipleActiveResultSets=true";
-        static string DBAdd2 = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BOJO_DB;Integrated Security=True";
-        
+        //public static string DBAdd = "Server=(localdb)\\MSSQLLocalDB;Database=BOJO_DB;Trusted_Connection=True;MultipleActiveResultSets=true";
+        //static string DBAdd2 = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BOJO_DB;Integrated Security=True";
+        public static string DB_String = "Server=tcp:bojo.database.windows.net,1433;Initial Catalog=BoJo;Persist Security Info=False;User ID=warlynrn;Password=BoJo2023@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
         //GET ACCESS 
         public IActionResult Login()
         {
@@ -56,7 +57,7 @@ namespace BoJo.Controllers
             string message;
 
             //========  SQL Connection =======/
-            using (SqlConnection conn = new SqlConnection(DBAdd2))
+            using (SqlConnection conn = new SqlConnection(DB_String))
             {
                 SqlCommand cmd = new SqlCommand("sp_RegisterUser", conn); //procedure
                 //===== set up procesure's parameters ============//
@@ -106,7 +107,7 @@ namespace BoJo.Controllers
             cUser.Password = ConvertToSha256(cUser.Password);
 
             //========  SQL Connection =======/
-            using (SqlConnection conn = new SqlConnection(DBAdd2))
+            using (SqlConnection conn = new SqlConnection(DB_String))
             {
                 SqlCommand cmd = new SqlCommand("sp_ValidateUser", conn); //procedure 
                 //===== set up parameters ============//
