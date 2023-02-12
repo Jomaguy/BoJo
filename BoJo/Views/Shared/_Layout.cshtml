@@ -1,4 +1,8 @@
 ﻿<!DOCTYPE html>
+@{
+    User user = BoJo.Controllers.AccessController.current_user;
+}
+
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,6 +29,30 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                    </ul>
+                </div>
+                <div style="float:right">
+                    <ul class="navbar-nav flex-grow-1">
+                        @if (user.Fname != null)
+                        {
+                            <li class="nav-item">
+                                ID:@user.IdUser &nbsp
+                            </li>
+                            <li class="nav-item">
+                                @user.Fname &nbsp
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-danger" asp-area="" asp-controller="Access" asp-action="EndSession">Logout</a>
+                            </li>
+                        }   
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-primary" style="float:right" asp-controller="Access" asp-action="Login">Login</a>
+                            </li>
+                        }
+
+
                     </ul>
                 </div>
             </div>
