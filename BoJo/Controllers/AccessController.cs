@@ -18,7 +18,7 @@ namespace BoJo.Controllers
         public static User current_user = new BoJo.Models.User();
         //public static string DBAdd = "Server=(localdb)\\MSSQLLocalDB;Database=BOJO_DB;Trusted_Connection=True;MultipleActiveResultSets=true";
         //static string DBAdd2 = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BOJO_DB;Integrated Security=True";
-        public static string DB_String = "Server=tcp:bojo.database.windows.net,1433;Initial Catalog=BoJo;Persist Security Info=False;User ID=warlynrn;Password=BoJo2023@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        public static string DB_String = "Server=tcp:bojosqlserver.database.windows.net,1433;Initial Catalog=BoJo;Persist Security Info=False;User ID=warlynrn;Password=BoJo2023@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         //GET ACCESS 
         public IActionResult Login()
