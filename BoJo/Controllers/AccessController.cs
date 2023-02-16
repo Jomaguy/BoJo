@@ -16,8 +16,8 @@ namespace BoJo.Controllers
         //======== Database connection string and Session ======/
         public static ISession cSession;
         public static User current_user = new BoJo.Models.User();
-        //public static string DBAdd = "Server=(localdb)\\MSSQLLocalDB;Database=BOJO_DB;Trusted_Connection=True;MultipleActiveResultSets=true";
-        //static string DBAdd2 = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BOJO_DB;Integrated Security=True";
+        
+        //sql connection string
         public static string DB_String = "Server=tcp:bojosqlserver.database.windows.net,1433;Initial Catalog=BoJo;Persist Security Info=False;User ID=warlynrn;Password=BoJo2023@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         //GET ACCESS 
@@ -40,13 +40,16 @@ namespace BoJo.Controllers
             ViewData["email_value"] = cUser.Email;
             ViewData["password_value"] = cUser.Password;
             ViewData["comfirmpassword_value"] = cUser.ComfirmPassword;
+            ViewData["DOB"] = cUser.DOB;
 
             //check if password and confirm password are the same
             if (cUser.Password == cUser.ComfirmPassword)
             {
                 //encrypt password
                 cUser.Password = ConvertToSha256(cUser.Password);
-            } else {
+            }
+            else
+            {
                 //update view
                 ViewData["Message"] = "The passwords does not match";
                 return View();
@@ -61,13 +64,15 @@ namespace BoJo.Controllers
             {
                 SqlCommand cmd = new SqlCommand("sp_RegisterUser", conn); //procedure
                 //===== set up procesure's parameters ============//
-                cmd.Parameters.AddWithValue("Fname",cUser.Fname);
-                cmd.Parameters.AddWithValue("Lname",cUser.Lname);
-                cmd.Parameters.AddWithValue("Email",cUser.Email);
-                cmd.Parameters.AddWithValue("Password",cUser.Password);
+                cmd.Parameters.AddWithValue("Fname", cUser.Fname);
+                cmd.Parameters.AddWithValue("Lname", cUser.Lname);
+                cmd.Parameters.AddWithValue("Email", cUser.Email);
+                cmd.Parameters.AddWithValue("Password", cUser.Password);
+                cmd.Parameters.AddWithValue("DOB", cUser.DOB);
+                cmd.Parameters.AddWithValue("Role", cUser.Role);
                 //===== setting up response values ====//
-                cmd.Parameters.Add("Registrated",SqlDbType.BigInt).Direction = ParameterDirection.Output;
-                cmd.Parameters.Add("Message", SqlDbType.VarChar,100).Direction = ParameterDirection.Output;
+                cmd.Parameters.Add("Registrated", SqlDbType.BigInt).Direction = ParameterDirection.Output;
+                cmd.Parameters.Add("Message", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
 
                 //type of command
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -86,10 +91,11 @@ namespace BoJo.Controllers
             ViewData["Message"] = message;
 
             //===== IF REGISTRATION WAS SUCCESSFULL =======//
-            if(registrated)
+            if (registrated)
             {
                 return RedirectToAction("Login", "Access"); //redirrect to login
-            } else
+            }
+            else
             {
                 return View();  //update view
             }
@@ -123,14 +129,15 @@ namespace BoJo.Controllers
                 //execute command
                 using (SqlDataReader Reader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
                 {
-                    if (Reader.HasRows && Reader.Read() && Reader.GetName(0)!="notvalid")
+                    if (Reader.HasRows && Reader.Read() && Reader.GetName(0) != "notvalid")
                     {
                         //COLLECT USER INFO
                         cUser.IdUser = Convert.ToInt32(Reader.GetInt32(Reader.GetOrdinal("IdUser")));
                         cUser.Fname = Reader.GetString(Reader.GetOrdinal("Fname"));
                         cUser.Lname = Reader.GetString(Reader.GetOrdinal("Lname"));
                         cUser.Email = Reader.GetString(Reader.GetOrdinal("Email"));
-                        cUser.ComfirmPassword = " ";
+                        cUser.DOB = Reader.GetDateTime("DOB").ToString("MM/dd/yyyy");
+                        cUser.Role = Reader.GetString(Reader.GetOrdinal("Role"));
                     }
                 }
 
@@ -143,10 +150,11 @@ namespace BoJo.Controllers
                 cSession = HttpContext.Session;
                 current_user = cUser;
                 return RedirectToAction("Index", "Home");
-            } else
+            }
+            else
             {
                 ViewData["Message"] = "This user does not exist";
-                return View(); 
+                return View();
             }
         } //Login
 

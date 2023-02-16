@@ -7,8 +7,9 @@
         public string Lname { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-
         public string ComfirmPassword { get; set; }
+        public string DOB { get; set; }
+        public string Role { get; set; } = "regular";
 
     }
 }
