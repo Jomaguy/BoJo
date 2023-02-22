@@ -12,14 +12,11 @@ namespace BoJo.Controllers
 {
     public class AccessController : Controller
     {
-
-        //======== Database connection string and Session ======/
-        public static ISession cSession;
-        public static User current_user = new BoJo.Models.User();
+        //======== Database connection string  ======/
         
         //sql connection string
-        public static string DB_String = "Server=tcp:bojosqlserver.database.windows.net,1433;Initial Catalog=BoJo;Persist Security Info=False;User ID=warlynrn;Password=BoJo2023@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-
+        protected static string connString = "Server=tcp:bojosqlserver.database.windows.net,1433;Initial Catalog=BoJo;Persist Security Info=False;User ID=warlynrn;Password=BoJo2023@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        
         //GET ACCESS 
         public IActionResult Login()
         {
@@ -60,7 +57,7 @@ namespace BoJo.Controllers
             string message;
 
             //========  SQL Connection =======/
-            using (SqlConnection conn = new SqlConnection(DB_String))
+            using (SqlConnection conn = new SqlConnection(connString))
             {
                 SqlCommand cmd = new SqlCommand("sp_RegisterUser", conn); //procedure
                 //===== set up procesure's parameters ============//
@@ -113,7 +110,7 @@ namespace BoJo.Controllers
             cUser.Password = ConvertToSha256(cUser.Password);
 
             //========  SQL Connection =======/
-            using (SqlConnection conn = new SqlConnection(DB_String))
+            using (SqlConnection conn = new SqlConnection(connString))
             {
                 SqlCommand cmd = new SqlCommand("sp_ValidateUser", conn); //procedure 
                 //===== set up parameters ============//
@@ -147,8 +144,8 @@ namespace BoJo.Controllers
             if (cUser != null && cUser.IdUser != 0)
             {
                 HttpContext.Session.SetString("user", JsonConvert.SerializeObject(cUser));
-                cSession = HttpContext.Session;
-                current_user = cUser;
+                HttpContext.Session.SetString("userfname",cUser.Fname);
+                HttpContext.Session.SetInt32("userid", cUser.IdUser);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -162,9 +159,8 @@ namespace BoJo.Controllers
         public IActionResult EndSession()
         {
             HttpContext.Session.SetString("user", ""); //clean storaged info
+            HttpContext.Session.SetInt32("userid", -1);
             HttpContext.Session.Clear();
-            cSession = null;
-            current_user = new BoJo.Models.User();
             return RedirectToAction("Login", "Access"); //redirrect to login
         } //EndSession
 

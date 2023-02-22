@@ -1,6 +1,8 @@
 ﻿<!DOCTYPE html>
 @{
-    User user = BoJo.Controllers.AccessController.current_user;
+    
+    string? fname = Context.Session.GetString("userfname");
+    int? userid = Context.Session.GetInt32("userid");
 }
 
 <html lang="en">
@@ -29,17 +31,20 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="BufferedFileUpload" asp-action="Index">Files</a>
+                        </li>
                     </ul>
                 </div>
                 <div style="float:right">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (user.Fname != null)
+                        @if (@userid != null)
                         {
                             <li class="nav-item">
-                                ID:@user.IdUser &nbsp
+                                ID:@userid &nbsp
                             </li>
                             <li class="nav-item">
-                                @user.Fname &nbsp
+                                @fname &nbsp
                             </li>
                             <li class="nav-item">
                                 <a class="btn btn-danger" asp-area="" asp-controller="Access" asp-action="EndSession">Logout</a>
