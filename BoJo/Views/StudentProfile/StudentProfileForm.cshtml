@@ -27,11 +27,11 @@
 				</div>
 				<div class="col-6 mb-3">
 					<h6>Major Preference</h6>
-					@if (SP.Major != null)
+					@if (SP.Major != "")
 					{
 						@Html.DropDownList("Major",ViewBag.majorSelectList as SelectList,@SP.Major,new {@class="form-control"})
 					} else {
-						@Html.DropDownList("Major",ViewBag.majorSelectList as SelectList,"Select Major",new {@class="form-control"})
+						@Html.DropDownList("Major",ViewBag.majorSelectList as SelectList,"Undecided",new {@class="form-control"})
 					}
 				</div>
 			</div>
@@ -75,19 +75,19 @@
 			<div class="row pt-1">
 				<div class="col-6 mb-3">
 					<h6>ACT</h6>
-					<input type="number" name="ACT_Score" class="form-control input_user" value=@SP.ACT_Score placeholder="36" required>
+					<input type="number" name="ACT_Score" class="form-control input_user" @(SP.ACT_Score!=0 ? "value=@SP.ACT_Score":null) placeholder="36" required>
 				</div>
 				<div class="col-6 mb-3">
 					<h6>SAT</h6>
-					<input type="number" name="SAT_Score" class="form-control input_user" value=@SP.SAT_Score placeholder="1600" required>
+					<input type="number" name="SAT_Score" class="form-control input_user" @(SP.SAT_Score!=0 ? "value=@SP.SAT_Score":null) placeholder="1600" required>
 				</div>
 				<div class="col-6 mb-3">
 					<h6>GPA</h6>
-					<input type="number" step="0.01" name="GPA" class="form-control input_user" value=@SP.GPA placeholder="4.00" required>
+					<input type="number" step="0.01" name="GPA" class="form-control input_user" @(SP.SAT_Score!=0 ? "value=@SP.GPA":null) placeholder="4.00" required>
 				</div>
 				<div class="col-6 mb-3">
 					<h6>GPA out of</h6>
-					<input type="number" step="0.01" name="GPA_outof" class="form-control input_user" value=@SP.GPA_outof placeholder="4.00" required>
+					<input type="number" step="0.01" name="GPA_outof" class="form-control input_user" @(SP.GPA_outof!=0 ? "value=@SP.GPA_outof":null) placeholder="4.00" required>
 				</div>
 			</div>
 			<hr class="mt-0 mb-4">
