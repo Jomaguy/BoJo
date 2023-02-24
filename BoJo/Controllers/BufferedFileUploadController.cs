@@ -62,17 +62,14 @@ namespace ProCodeGuide.Samples.FileUpload.Controllers
                         }
                     }
                 }
-                
                 conn.Close();//close conncetion
-                
-                
             }
         }
 
         public IActionResult Index()
         {
             //only allow logged in users
-            if (HttpContext.Session.GetInt32("userid") > -1)
+            if (HttpContext.Session.GetInt32("userid") != null)
             {
                 //get new list of files
                 List<UserFiles> user_files = _bufferedFileUploadService.GetFiles(HttpContext.Session.GetInt32("userid")); //get files

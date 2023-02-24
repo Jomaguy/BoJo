@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Student Profile Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+	StudentProfile SP = (StudentProfile)ViewData["StudentProfile"];
+}
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+
+</head>
+<H4 style="text-align:center">Student Profile</H4>
+<body>
+	<form action="@Url.Action("StudentProfileForm","StudentProfile")" method="post">
+    <div style="width:100%;height:auto;display:flex;margin-bottom:50px">
+        <div style="width:100%;margin:10px;">
+			<h6>Study Preferences</h6>
+			<hr class="mt-0 mb-4">
+			<div class="row pt-1">
+				<div class="col-6 mb-3">
+					<h6>Program Type</h6>
+					<input type="radio" id="undergraduate" value="Undergraduate" name="ProgramType" @(SP.ProgramType=="Undergraduate" ? "checked='checked'":"")>
+					<label for="undergraduate">Undergraduate</label>
+
+					<input type="radio" id="graduate" value="Graduate" name="ProgramType" @(SP.ProgramType=="Graduate" ? "checked='checked'":"")>
+ 					<label for="graduate">Graduate</label>
+				</div>
+				<div class="col-6 mb-3">
+					<h6>Major Preference</h6>
+					@if (SP.Major != null)
+					{
+						@Html.DropDownList("Major",ViewBag.majorSelectList as SelectList,@SP.Major,new {@class="form-control"})
+					} else {
+						@Html.DropDownList("Major",ViewBag.majorSelectList as SelectList,"Select Major",new {@class="form-control"})
+					}
+				</div>
+			</div>
+			<h6>School Preferences</h6>
+			<hr class="mt-0 mb-4">
+			<div class="row pt-1">
+				<div class="col-6 mb-3">
+					<h6>Location</h6>
+					<input type="radio" id="Any" value="Any" name="Location" @(SP.Location=="Any" ? "checked='checked'":"")>
+					<label for="Any">Any</label>
+					<br />
+					<input type="radio" id="West" value="West" name="Location" @(SP.Location=="West" ? "checked='checked'":"")>
+					<label for="West">West</label>
+					<br />
+					<input type="radio" id="Mid-West" value="Mid-West" name="Location" @(SP.Location=="Mid-West" ? "checked='checked'":"")>
+ 					<label for="Mid-West">Mid-West</label>
+					<br />
+					<input type="radio" id="South-West" value="South-West" name="Location" @(SP.Location=="South-West" ? "checked='checked'":"")>
+ 					<label for="South-West">South-West</label>
+					<br />
+					<input type="radio" id="South-East" value="South-East" name="Location" @(SP.Location=="South-East" ? "checked='checked'":"")>
+ 					<label for="South-East">South-East</label>
+					<br />
+					<input type="radio" id="North-East" value="North-East" name="Location" @(SP.Location=="North-East" ? "checked='checked'":"")>
+ 					<label for="North-East">North-East</label>
+				</div>
+				<div class="col-6 mb-3">
+					<h6>Program Type</h6>
+					<input type="radio" id="Small" value="Small" name="School_Size" @(SP.School_Size=="Small" ? "checked='checked'":"")>
+					<label for="Small">Small</label>
+					<br />
+					<input type="radio" id="Medium" value="Medium" name="School_Size" @(SP.School_Size=="Medium" ? "checked='checked'":"")>
+ 					<label for="Medium">Medium</label>
+					<br />
+					<input type="radio" id="Big" value="Big" name="School_Size" @(SP.School_Size=="Big" ? "checked='checked'":"")>
+ 					<label for="Big">Big</label>
+				</div>
+			</div>
+			<h6>Test Score</h6>
+			<hr class="mt-0 mb-4">
+			<div class="row pt-1">
+				<div class="col-6 mb-3">
+					<h6>ACT</h6>
+					<input type="number" name="ACT_Score" class="form-control input_user" value=@SP.ACT_Score placeholder="36" required>
+				</div>
+				<div class="col-6 mb-3">
+					<h6>SAT</h6>
+					<input type="number" name="SAT_Score" class="form-control input_user" value=@SP.SAT_Score placeholder="1600" required>
+				</div>
+				<div class="col-6 mb-3">
+					<h6>GPA</h6>
+					<input type="number" step="0.01" name="GPA" class="form-control input_user" value=@SP.GPA placeholder="4.00" required>
+				</div>
+				<div class="col-6 mb-3">
+					<h6>GPA out of</h6>
+					<input type="number" step="0.01" name="GPA_outof" class="form-control input_user" value=@SP.GPA_outof placeholder="4.00" required>
+				</div>
+			</div>
+			<hr class="mt-0 mb-4">
+			<div class="row pt-1">
+				<button type="submit" name="button" class="btn btn-primary">Submit</button>
+				<br />
+				<h2>@ViewData["Message"]</h2>
+			</div>
+        </div>
+    </div>
+	</form>
+</body>

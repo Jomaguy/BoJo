@@ -41,10 +41,7 @@
                         @if (@userid != null)
                         {
                             <li class="nav-item">
-                                ID:@userid &nbsp
-                            </li>
-                            <li class="nav-item">
-                                @fname &nbsp
+                                <a class="nav-link text-dark" asp-area="" asp-controller="StudentProfile" asp-action="StudentProfile">Profile</a>
                             </li>
                             <li class="nav-item">
                                 <a class="btn btn-danger" asp-area="" asp-controller="Access" asp-action="EndSession">Logout</a>
@@ -56,8 +53,6 @@
                                 <a class="btn btn-primary" style="float:right" asp-controller="Access" asp-action="Login">Login</a>
                             </li>
                         }
-
-
                     </ul>
                 </div>
             </div>
