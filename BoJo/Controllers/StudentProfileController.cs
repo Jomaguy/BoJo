@@ -13,14 +13,14 @@ namespace BoJo.Controllers
         string connString = "Server=tcp:bojosqlserver.database.windows.net,1433;Initial Catalog=BoJo;Persist Security Info=False;User ID=warlynrn;Password=BoJo2023@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         
         //major list
-        private List<Major> majors = new List<Major>()
+        private List<string> majors = new List<string>()
         {
-            new Major() { Id="Computer Science",Title="Computer Science"},
-            new Major() { Id="Biology",Title="Biology"},
-            new Major() { Id="Physics",Title="Physics"},
-            new Major() { Id="Mathematics",Title="Mathematics"},
-            new Major() { Id="Chemestry",Title="Chemestry"},
-            new Major() { Id="Business",Title="Business"}
+            "Computer Science",
+            "Biology",
+            "Physics",
+            "Mathematics",
+            "Chemestry",
+            "Business"
         };
         
         //this function manages the student information profile
@@ -46,7 +46,7 @@ namespace BoJo.Controllers
             if (HttpContext.Session.GetInt32("userid") != null)
             {
                 //get necesary information
-                ViewBag.majorSelectList = new SelectList(majors, "Id", "Title");
+                ViewData["majorSelectList"] = majors;
                 ViewData["StudentProfile"] = GetSPInformation(HttpContext.Session.GetInt32("userid"));
                 return View();
             }

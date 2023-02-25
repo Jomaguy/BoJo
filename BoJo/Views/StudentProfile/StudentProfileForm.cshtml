@@ -1,7 +1,8 @@
 ﻿@{
-    ViewData["Title"] = "Student Profile Form";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Student Profile Form";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 	StudentProfile SP = (StudentProfile)ViewData["StudentProfile"];
+	List<string> majors = (List<string>)ViewData["majorSelectList"];
 }
 <head>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -19,7 +20,7 @@
 			<div class="row pt-1">
 				<div class="col-6 mb-3">
 					<h6>Program Type</h6>
-					<input type="radio" id="undergraduate" value="Undergraduate" name="ProgramType" @(SP.ProgramType=="Undergraduate" ? "checked='checked'":"")>
+					<input type="radio" id="undergraduate" value="Undergraduate" name="ProgramType" checked="checked">
 					<label for="undergraduate">Undergraduate</label>
 
 					<input type="radio" id="graduate" value="Graduate" name="ProgramType" @(SP.ProgramType=="Graduate" ? "checked='checked'":"")>
@@ -27,12 +28,15 @@
 				</div>
 				<div class="col-6 mb-3">
 					<h6>Major Preference</h6>
-					@if (SP.Major != "")
-					{
-						@Html.DropDownList("Major",ViewBag.majorSelectList as SelectList,@SP.Major,new {@class="form-control"})
-					} else {
-						@Html.DropDownList("Major",ViewBag.majorSelectList as SelectList,"Undecided",new {@class="form-control"})
-					}
+					<select name="Major" >
+						<option selected>Undecided</option>
+						@foreach(string m in majors)
+						{
+							<!option
+								@(@SP.Major==@m ? "selected" : "")	
+							>@m</!option>
+						}
+					</select>
 				</div>
 			</div>
 			<h6>School Preferences</h6>
@@ -40,7 +44,7 @@
 			<div class="row pt-1">
 				<div class="col-6 mb-3">
 					<h6>Location</h6>
-					<input type="radio" id="Any" value="Any" name="Location" @(SP.Location=="Any" ? "checked='checked'":"")>
+					<input type="radio" id="Any" value="Any" name="Location" checked="checked">
 					<label for="Any">Any</label>
 					<br />
 					<input type="radio" id="West" value="West" name="Location" @(SP.Location=="West" ? "checked='checked'":"")>
@@ -60,7 +64,7 @@
 				</div>
 				<div class="col-6 mb-3">
 					<h6>Program Type</h6>
-					<input type="radio" id="Small" value="Small" name="School_Size" @(SP.School_Size=="Small" ? "checked='checked'":"")>
+					<input type="radio" id="Small" value="Small" name="School_Size" checked="checked">
 					<label for="Small">Small</label>
 					<br />
 					<input type="radio" id="Medium" value="Medium" name="School_Size" @(SP.School_Size=="Medium" ? "checked='checked'":"")>
@@ -75,19 +79,35 @@
 			<div class="row pt-1">
 				<div class="col-6 mb-3">
 					<h6>ACT</h6>
-					<input type="number" name="ACT_Score" class="form-control input_user" @(SP.ACT_Score!=0 ? "value=@SP.ACT_Score":null) placeholder="36" required>
+					<input type="number" name="ACT_Score" class="form-control input_user" min="0" max="36" placeholder="36" required
+						@if(@SP.ACT_Score!=0){
+							<text>value=@SP.ACT_Score</text>
+						}
+					/>
 				</div>
 				<div class="col-6 mb-3">
 					<h6>SAT</h6>
-					<input type="number" name="SAT_Score" class="form-control input_user" @(SP.SAT_Score!=0 ? "value=@SP.SAT_Score":null) placeholder="1600" required>
+					<input type="number" name="SAT_Score" class="form-control input_user" placeholder="1600" min="0" max="1600" required
+						@if(@SP.SAT_Score!=0){
+							<text>value=@SP.SAT_Score</text>
+						} 
+					/>
 				</div>
 				<div class="col-6 mb-3">
 					<h6>GPA</h6>
-					<input type="number" step="0.01" name="GPA" class="form-control input_user" @(SP.SAT_Score!=0 ? "value=@SP.GPA":null) placeholder="4.00" required>
+					<input type="number" step="0.01" name="GPA" class="form-control input_user" placeholder="4.00" min="0" required  
+						@if(@SP.GPA!=0){
+							<text>value=@SP.GPA</text>
+						}
+					/>
 				</div>
 				<div class="col-6 mb-3">
 					<h6>GPA out of</h6>
-					<input type="number" step="0.01" name="GPA_outof" class="form-control input_user" @(SP.GPA_outof!=0 ? "value=@SP.GPA_outof":null) placeholder="4.00" required>
+					<input type="number" step="0.01" name="GPA_outof" class="form-control input_user" min="0" placeholder="4.00" required
+						@if(@SP.GPA_outof!=0){
+							<text>value=@SP.GPA_outof</text>
+						}
+					/>
 				</div>
 			</div>
 			<hr class="mt-0 mb-4">
