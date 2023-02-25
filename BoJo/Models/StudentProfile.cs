@@ -12,9 +12,4 @@
         public float GPA_outof { get; set; }
 
     }
-    public class Major
-    {
-        public String Id { get; set; }
-        public string Title { get; set; }
-    }
 }
