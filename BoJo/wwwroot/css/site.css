@@ -16,3 +16,26 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.chatbox {
+    background-color: #F0F8FF;
+    border: black solid 5px;
+    border-radius: 50%;
+    float: right;
+    height: 100px;
+    margin-right: -10%;
+    margin-top: 40%;
+    padding: 5px;
+    width: 100px;
+}
+
+.transform {
+    transition: all .3s ease;
+}
+
+.openChatbox {
+    border-radius: 5%;
+    height: 500px;
+    margin-top: 10%;
+    width: 300px;
+}
