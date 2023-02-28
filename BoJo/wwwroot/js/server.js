@@ -70,6 +70,16 @@ app.post("/create-order", async (req, res) => {
   } catch (e) {
     res.status(500).json({ error: e.message })
   }
-})
+});
+
+app.post("/server/capture-order", async (req, res) => {
+    const { orderID } = req.body;
+    try {
+        const captureData = await paypal.capturePayment(orderID);
+        res.json(captureData);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
 
 app.listen(3000)

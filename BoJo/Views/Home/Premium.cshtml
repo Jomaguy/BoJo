@@ -32,7 +32,7 @@
     <script>paypal.Buttons({
             // Order is created on the server and the order id is returned
             createOrder() {
-                return fetch("/my-server/create-paypal-order", {
+                return fetch("/server/create-order", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -53,7 +53,7 @@
             },
             // Finalize the transaction on the server after payer approval
             onApprove(data) {
-                return fetch("/my-server/capture-paypal-order", {
+                return fetch("/server/capture-order", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
