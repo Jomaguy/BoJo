@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 @{
     
     string? fname = Context.Session.GetString("userfname");
@@ -32,7 +32,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="BufferedFileUpload" asp-action="Index">Files</a>
                         </li>
                         <li class="nav-item">
-                            @Html.ActionLink("Chat","ChatRoom","Chat")
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="ChatRoom">Chat</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Premium">Premium</a>
                         </li>
                     </ul>
                 </div>
@@ -40,6 +43,7 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (@userid != null)
                         {
+
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="StudentProfile" asp-action="StudentProfile">Profile</a>
                             </li>

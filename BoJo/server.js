@@ -1,75 +1,34 @@
-require("dotenv").config()
+import "dotenv/config"; // loads variables from .env file
+import express from "express";
+import * as paypal from "./paypal-api.js";
+const { PORT = 8888 } = process.env;
 
-const express = require("express")
-const app = express()
-app.set("view engine", "ejs")
-app.use(express.static("public"))
-app.use(express.json())
+const app = express();
 
-const paypal = require("@paypal/checkout-server-sdk")
-const Environment =
-  process.env.NODE_ENV === "production"
-    ? paypal.core.LiveEnvironment
-    : paypal.core.SandboxEnvironment
-const paypalClient = new paypal.core.PayPalHttpClient(
-  new Environment(
-    process.env.PAYPAL_CLIENT_ID,
-    process.env.PAYPAL_CLIENT_SECRET
-  )
-)
+app.use(express.static("public"));
 
-const storeItems = new Map([
-  [1, { price: 100, name: "test 1" }],
-  [2, { price: 200, name: "test 2" }],
-])
+// parse post params sent in body in json format
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.render("index", {
-    paypalClientId: process.env.PAYPAL_CLIENT_ID,
-  })
-})
+app.post("/my-server/create-paypal-order", async (req, res) => {
+    try {
+        const order = await paypal.createOrder();
+        res.json(order);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
 
-app.post("/create-order", async (req, res) => {
-  const request = new paypal.orders.OrdersCreateRequest()
-  const total = req.body.items.reduce((sum, item) => {
-    return sum + storeItems.get(item.id).price * item.quantity
-  }, 0)
-  request.prefer("return=representation")
-  request.requestBody({
-    intent: "CAPTURE",
-    purchase_units: [
-      {
-        amount: {
-          currency_code: "USD",
-          value: total,
-          breakdown: {
-            item_total: {
-              currency_code: "USD",
-              value: total,
-            },
-          },
-        },
-        items: req.body.items.map(item => {
-          const storeItem = storeItems.get(item.id)
-          return {
-            name: storeItem.name,
-            unit_amount: {
-              currency_code: "USD",
-              value: storeItem.price,
-            },
-            quantity: item.quantity,
-          }
-        }),
-      },
-    ],
-  })
+app.post("/my-server/capture-paypal-order", async (req, res) => {
+    const { orderID } = req.body;
+    try {
+        const captureData = await paypal.capturePayment(orderID);
+        res.json(captureData);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
 
-  try {
-    const order = await paypalClient.execute(request)
-    res.json({ id: order.result.id })
-  } catch (e) {
-    res.status(500).json({ error: e.message })
-  }
-})
-
-app.listen(3000)
+app.listen(PORT, () => {
+    console.log(`Server listening at http://localhost:${PORT}/`);
+});

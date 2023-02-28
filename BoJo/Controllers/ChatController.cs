@@ -9,7 +9,7 @@ namespace BoJo.Controllers
     public class ChatController : Controller
     {
         //MIGHT NEED TO BE CALL DIFFERENT VAR IN ACCESS CONTROLER
-        private string DBSTRING = BoJo.Controllers.AccessController.connString;
+        private string DBSTRING = "Server=tcp:bojosqlserver.database.windows.net,1433;Initial Catalog=BoJo;Persist Security Info=False;User ID=warlynrn;Password=BoJo2023@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         //FIGURE OUT HOW TO GET USER HttpContext.Session.GetInt32("userid")
         private int GetChatRoomId()
         {
@@ -50,14 +50,17 @@ namespace BoJo.Controllers
         [Route("/Chat/ChatRoom")]
         public IActionResult ChatRoom()
         {
+            if (HttpContext.Session.GetInt32("userid") == null)
+            {
+                return RedirectToAction("Login", "Access");
+            }
             List<Message> messages = new List<Message>();
             int ChatId = GetChatRoomId();
 
             using (SqlConnection conn = new SqlConnection(DBSTRING))
             {
-                SqlCommand MessageCmd = new SqlCommand("SELECT * FROM Message WHERE ChatRoomId = @id AND UserId = @UID ORDER BY Created", conn);
+                SqlCommand MessageCmd = new SqlCommand("SELECT * FROM Message WHERE ChatRoomId = @id ORDER BY Created", conn);
                 MessageCmd.Parameters.AddWithValue("@id", ChatId);
-                MessageCmd.Parameters.AddWithValue("@UID", HttpContext.Session.GetInt32("userid"));
 
                 conn.Open();
                 using (SqlDataReader read = MessageCmd.ExecuteReader())
