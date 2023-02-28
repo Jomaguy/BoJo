@@ -14,14 +14,6 @@
     <!--<img src="Url.Content("~/Images/speechBubble.png")" id="speechBubbleImage" />-->
     <img src="~/Image/speechBubble.png" id="speechBubbleImage" />
 
-
-
-    <li class="clearfix">
-        <div class="message-data text-right">
-            <span class="message-data-time">10:10 AM, Today</span>                               
-        </div>
-        <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
-    </li>
     <ul>
         @if(msgs != null) {
             @foreach (var msg in msgs)
@@ -30,18 +22,18 @@
                 {
                     <li class="clearfix">
                         <div class="message-data text-right">
-                            <span class="message-data-time">10:10 AM, Today</span>                               
+                            <span class="message-data-time">@Html.Label(msg.Created.ToString())</span>                               
                         </div>
-                        <div class="message other-message float-right">@Html.Label(msg.Text)</div>
+                        <div class="message other-message float-right">Me: @Html.Label(msg.Text)</div>
                     </li>
                 }
                 else
                 {
                     <li class="clearfix">
                         <div class="message-data">
-                            <span class="message-data-time">11:10 AM, Today</span>                               
+                            <span class="message-data-time">@Html.Label(msg.Created.ToString())</span>                               
                         </div>
-                        <div class="message other-message float-right">@Html.Label(msg.Text)</div>
+                        <div class="message other-message float-right">Admin: @Html.Label(msg.Text)</div>
                     </li>
                 }
             }
