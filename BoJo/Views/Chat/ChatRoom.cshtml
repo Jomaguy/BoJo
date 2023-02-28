@@ -1,0 +1,54 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model BoJo.Models.Message
+
+@{
+    ViewData["Title"] = "ChatRoom";
+    var id = ViewData["id"];
+    var msgs = (List<Message>)ViewData["MessageObject"];
+}
+<div class="chatbox transform" id="chatbox">
+    <input type="button" value="x" id="closeButton" style="display:none;">
+
+    <!--<img src="Url.Content("~/Images/speechBubble.png")" id="speechBubbleImage" />-->
+    <img src="~/Images/speechBubble.png" id="speechBubbleImage" />
+
+
+
+    <li class="clearfix">
+        <div class="message-data text-right">
+            <span class="message-data-time">10:10 AM, Today</span>                               
+        </div>
+        <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
+    </li>
+    <ul>
+        @if(msgs != null) {
+            @foreach (var msg in msgs)
+            {
+                @if (msg.UserId == Context.Session.GetInt32("userid"))
+                {
+                    <li class="clearfix">
+                        <div class="message-data text-right">
+                            <span class="message-data-time">10:10 AM, Today</span>                               
+                        </div>
+                        <div class="message other-message float-right">@Html.Label(msg.Text)</div>
+                    </li>
+                }
+                else
+                {
+                    <li class="clearfix">
+                        <div class="message-data">
+                            <span class="message-data-time">11:10 AM, Today</span>                               
+                        </div>
+                        <div class="message other-message float-right">@Html.Label(msg.Text)</div>
+                    </li>
+                }
+            }
+        }
+    </ul>
+    <form action="@Url.Action("CreateMessage","Chat")" method="post">
+        <input type="text" id="messageBox" name="messageBox" value=@ViewData["msg"] style="display:none; margin-top:150%; width:80%;">
+        <input type="submit" value="Send" id="sendButton"  style="display:none; float:right; margin-top:-10.75%;">
+    </form>
+</div>
