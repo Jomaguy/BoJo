@@ -1,3 +1,10 @@
+@{
+    ViewBag.Title = "Files";
+}
+
+@{
+    var UserFiles = (List<UserFiles>)ViewData["UserFiles"];
+}
 <h1>Buffered File Upload</h1>
 
 <hr />
@@ -13,3 +20,36 @@
         @ViewBag.Message
     </div>
 }
+<br />
+<br />
+<div>
+    <table class="table-condensed table-bordered">
+        <tr>
+            <th align="center">
+                File Name
+            </th>
+            <th align="center">
+                Download File
+            </th>
+        </tr>
+        @if(@UserFiles != null)
+        {
+            @foreach (var file in UserFiles)
+            {
+                <tr>
+                    <td align="center">
+                        @file.FileName
+                    </td>
+                    <td align="center">
+                        <a class="btn btn-default" 
+                            href="./BufferedFileUpload/linkDownloadFile_onclick?fileid=@file.FileId"
+                            target="_blank">
+                            <b>Download</b>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        
+    </table>
+</div>

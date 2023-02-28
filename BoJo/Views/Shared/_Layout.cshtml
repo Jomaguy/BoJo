@@ -1,6 +1,8 @@
 ﻿<!DOCTYPE html>
 @{
-    User user = BoJo.Controllers.AccessController.current_user;
+    
+    string? fname = Context.Session.GetString("userfname");
+    int? userid = Context.Session.GetInt32("userid");
 }
 
 <html lang="en">
@@ -27,7 +29,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="BufferedFileUpload" asp-action="Index">Files</a>
                         </li>
                         <li class="nav-item">
                             @Html.ActionLink("Chat","ChatRoom","Chat")
@@ -36,13 +38,10 @@
                 </div>
                 <div style="float:right">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (user.Fname != null)
+                        @if (@userid != null)
                         {
                             <li class="nav-item">
-                                ID:@user.IdUser &nbsp
-                            </li>
-                            <li class="nav-item">
-                                @user.Fname &nbsp
+                                <a class="nav-link text-dark" asp-area="" asp-controller="StudentProfile" asp-action="StudentProfile">Profile</a>
                             </li>
                             <li class="nav-item">
                                 <a class="btn btn-danger" asp-area="" asp-controller="Access" asp-action="EndSession">Logout</a>
@@ -54,8 +53,6 @@
                                 <a class="btn btn-primary" style="float:right" asp-controller="Access" asp-action="Login">Login</a>
                             </li>
                         }
-
-
                     </ul>
                 </div>
             </div>
@@ -68,9 +65,6 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - BoJo - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
