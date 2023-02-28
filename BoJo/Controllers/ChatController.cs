@@ -68,6 +68,7 @@ namespace BoJo.Controllers
                         msg.MessageId = (int)read["MessageId"];
                         msg.ChatRoomId = ChatId;
                         msg.Text = (string)read["message"];
+                        Console.Write(msg.Text);
                         msg.Created = (DateTime)read["Created"];
                         msg.UserId= (int)read["UserId"];
                         messages.Add(msg);
