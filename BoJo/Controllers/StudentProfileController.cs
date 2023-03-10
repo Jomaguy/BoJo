@@ -22,7 +22,7 @@ namespace BoJo.Controllers
             "Chemestry",
             "Business"
         };
-        
+
         //this function manages the student information profile
         public IActionResult StudentProfile()
         {
