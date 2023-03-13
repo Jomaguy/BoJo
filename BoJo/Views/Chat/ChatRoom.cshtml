@@ -8,7 +8,7 @@
     var id = ViewData["id"];
     var msgs = (List<Message>)ViewData["MessageObject"];
 }
-<div class="chatbox transform" id="chatbox">
+<div class="chatbox transform" id="chatbox" style="overflow-y: scroll;">
     <input type="button" value="x" id="closeButton" style="display:none;">
 
     <!--<img src="Url.Content("~/Images/speechBubble.png")" id="speechBubbleImage" />-->
@@ -37,10 +37,12 @@
                     </li>
                 }
             }
-        }
+        }  
     </ul>
-    <form action="@Url.Action("CreateMessage","Chat")" method="post">
-        <input type="text" id="messageBox" name="messageBox" value=@ViewData["msg"] style="display:none; margin-top:150%; width:80%;">
-        <input type="submit" value="Send" id="sendButton"  style="display:none; float:right; margin-top:-10.75%;">
-    </form>
+    <div style="margin-bottom:10px;float:initial;">
+            <form action="@Url.Action("CreateMessage","Chat")" method="post">
+                <input type="text" id="messageBox" name="messageBox" value=@ViewData["msg"] style="display:none; margin-top:150%; width:80%;">
+                <input type="submit" value="Send" id="sendButton"  style="display:none; float:right; margin-top:-10.75%;">
+            </form>
+        </div>
 </div>
