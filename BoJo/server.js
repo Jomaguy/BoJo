@@ -1,7 +1,7 @@
 import "dotenv/config"; // loads variables from .env file
 import express from "express";
 import * as paypal from "./paypal-api.js";
-const { PORT = 8888 } = process.env;
+const { PORT = 7038 } = process.env;
 
 const app = express();
 
