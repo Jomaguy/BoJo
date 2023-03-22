@@ -5,44 +5,92 @@
 
 @{
     ViewData["Title"] = "ChatRoom";
-    var id = ViewData["id"];
-    var msgs = (List<Message>)ViewData["MessageObject"];
+    var lastId = 0;
+    var messages = (List<Message>)ViewData["MessageObject"];
+
+    if (messages != null && messages.Count > 0)
+    {
+        lastId = messages[messages.Count - 1].MessageId;
+    }
 }
-<div class="chatbox transform" id="chatbox" style="overflow-y: scroll;">
-    <input type="button" value="x" id="closeButton" style="display:none;">
-
-    <!--<img src="Url.Content("~/Images/speechBubble.png")" id="speechBubbleImage" />-->
-    <img src="~/Image/speechBubble.png" id="speechBubbleImage" />
-
-    <ul>
-        @if(msgs != null) {
-            @foreach (var msg in msgs)
-            {
-                @if (msg.UserId == Context.Session.GetInt32("userid"))
-                {
-                    <li class="clearfix">
-                        <div class="message-data text-right">
-                            <span class="message-data-time">@Html.Label(msg.Created.ToString())</span>                               
+<div class="chat-window" id="chat-window">
+    <div class="message-box" id="message-box">
+        <div class="hi-there">
+            <p class="p1">Hi there</p>
+            <br />
+        </div>
+        <div class="chat">
+            @if (messages!=null) {
+                @foreach(var msgs in messages) {
+                    @if (msgs.UserId == Context.Session.GetInt32("userid"))
+                    {
+                        <div class="first-chat">
+                            <p>@msgs.Text</p>
+                        </div>                       
+                    } else
+                    {
+                        <div class="second-chat">
+                            <p>@msgs.Text</p>
                         </div>
-                        <div class="message other-message float-right">Me: @Html.Label(msg.Text)</div>
-                    </li>
-                }
-                else
-                {
-                    <li class="clearfix">
-                        <div class="message-data">
-                            <span class="message-data-time">@Html.Label(msg.Created.ToString())</span>                               
-                        </div>
-                        <div class="message other-message float-right">Admin: @Html.Label(msg.Text)</div>
-                    </li>
+                    }
                 }
             }
-        }  
-    </ul>
-    <div style="margin-bottom:10px;float:initial;">
-            <form action="@Url.Action("CreateMessage","Chat")" method="post">
-                <input type="text" id="messageBox" name="messageBox" value=@ViewData["msg"] style="display:none; margin-top:150%; width:80%;">
-                <input type="submit" value="Send" id="sendButton"  style="display:none; float:right; margin-top:-10.75%;">
-            </form>
         </div>
+    </div>
+    <div class="input-box">
+        <div class="write-reply">
+            <input class="inputText" type="text" id="textInput" placeholder="Write a reply..."/>
+        </div>
+        <div class="send-button">
+            <button type="submit" class="send-message" id="send">send</button>
+        </div>
+    </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#send").click( function () {
+            var msg = $("#textInput").val();
+
+            $.ajax({
+                type:"POST",
+                url:'@Url.Action("CreateMessage","Chat")?messageBox=' + msg,
+                data: msg,
+                datatype:'json',
+                success: function (data){
+                    //APPEND NEW CHAT BUBBLES TO CHAT DIV
+                    $(".chat").append(`<div class="first-chat"><p> ${data} </p></div>`);
+                },
+                error: function(res){
+                    alert("ERROR");
+                }
+            });
+        });
+    });    
+</script>
+<script>
+    $(document).ready(function() {
+
+        setInterval(fetchMessage,1000);
+
+        function fetchMessage() {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetLatestMessage","Chat")',
+                datatype:'json',
+                success: function(data) {   
+                    //alert(data["messageId"]);
+                    var id = Number(data.messageId);
+                    if(@lastId > id){
+                        $(".chat").append(`<div class="first-chat"><p> ${data} </p></div>`);
+                    }
+                },
+                error: function(res){
+                    alert("ERROR");
+                }
+            });
+        }
+    });
+</script>
