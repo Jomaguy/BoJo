@@ -1,0 +1,49 @@
+﻿@model IEnumerable<BoJo.Models.UniversityMatches>
+
+<style>
+{
+  box-sizing: border-box;
+}
+
+    .column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  /*height: 300px;*/ /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+
+
+
+@foreach (var item in Model)
+{
+   
+     <div class="row">
+        <div class="column">
+            <img src = " " alt= "Image not Found" > 
+        </div>
+        <div class="column">
+            <a href=@Url.Action("Institution","Institutions", new { id = @item.UniversityNumber })><h1>@item.UniversityName</h1></a>
+            <h4>About</h4>
+            <p>
+                @item.Overview
+            </p>
+            <br>
+            <h5> School Size: @item.Size</h5>
+            <h5> Average Cost After Aid: $@item.TuitonAndFees</h5>
+            <h5>Percentage Match Preferences: @item.preference_match_percent%</h5>
+            <h5>Admission Match Percentage: @item.admission_match_percent%</h5>
+        </div>
+    </div>
+
+<hr>
+
+}
+

@@ -145,6 +145,7 @@ namespace BoJo.Controllers
             {
                 HttpContext.Session.SetString("user", JsonConvert.SerializeObject(cUser));
                 HttpContext.Session.SetString("userfname",cUser.Fname);
+                HttpContext.Session.SetString("userrole", cUser.Role);
                 HttpContext.Session.SetInt32("userid", cUser.IdUser);
                 return RedirectToAction("Index", "Home");
             }

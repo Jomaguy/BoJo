@@ -1,6 +1,7 @@
 ﻿using BoJo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
 using System.Data;
 
 namespace BoJo.Controllers
@@ -10,10 +11,10 @@ namespace BoJo.Controllers
         //sql connection string
         protected static string connString = "Server=tcp:bojosqlserver.database.windows.net,1433;Initial Catalog=BoJo;Persist Security Info=False;User ID=warlynrn;Password=BoJo2023@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-        public IActionResult Institution()
+        public IActionResult Institution(int id)
         {
-            Institution institution = GetInstitution(1);
-            if(institution.intitutionID == null)
+            Institution institution = GetInstitution(id);
+            if(institution.institutionID == null || institution.institutionID==0)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -29,7 +30,11 @@ namespace BoJo.Controllers
                 using (SqlConnection conn = new SqlConnection(connString))
                 {
                     //procedure
-                    SqlCommand cmd = new SqlCommand("select * from institutions where intitutionID=@id", conn); //procedure
+                    SqlCommand cmd = new SqlCommand("" +
+                        "select *" +
+                        "from institutions " +
+                        "where institutionID=@id", 
+                        conn); //query
 
                     //===== set up procesure's parameters ============//
                     cmd.Parameters.AddWithValue("id", id);
@@ -46,7 +51,7 @@ namespace BoJo.Controllers
                         if (Reader.Read() && Reader.HasRows)
                         {
                             //get values
-                            current_institution.intitutionID = (int)Reader["intitutionID"];
+                            current_institution.institutionID = (int)Reader["institutionID"];
                             current_institution.name = Reader["name"].ToString();
                             current_institution.about = Reader["about"].ToString();
                             current_institution.address = Reader["address"].ToString();
@@ -58,13 +63,20 @@ namespace BoJo.Controllers
                             current_institution.level = Reader["level"].ToString();
                             current_institution.control = Reader["control"].ToString();
                             current_institution.size = Reader["size"].ToString();
+
+                            //new
+                            current_institution.Competitive = Reader["Competitive"].ToString();
+                            current_institution.SportsOveralLevel = Reader["SportsOveralLevel"].ToString();
+                            current_institution.RatioStudentFaculty = (int)Reader["RatioStudentFaculty"];
+                            current_institution.GraduateProgram = Convert.ToBoolean(Reader["GraduateProgram"].ToString());
+
                             current_institution.acceptance_rate = (float)(Double)Reader["acceptance_rate"];
                             current_institution.graduation_rate = (float)(Double)Reader["graduation_rate"];
                             current_institution.total_cost = (float)(Double)Reader["total_cost"];
                             current_institution.average_cost_after_aid = (float)(Double)Reader["average_cost_after_aid"];
                             current_institution.apply_url = Reader["apply_url"].ToString();
                             current_institution.website_url = Reader["website_url"].ToString();
-                            current_institution.majors = Reader["majors"].ToString();
+                            //current_institution.majors = JsonConvert.DeserializeObject<List<string>>(Reader["majors"].ToString());
                             current_institution.average_GPA = (float)(Double)Reader["average_GPA"];
                             current_institution.average_SAT = (int)Reader["average_SAT"];
                             current_institution.average_ACT = (int)Reader["average_ACT"];
