@@ -199,6 +199,10 @@ namespace BoJo.Controllers
                             current_SP.Major = Reader["Major"].ToString();
                             current_SP.Location = Reader["Location"].ToString();
                             current_SP.School_Size = Reader["School_Size"].ToString();
+                            current_SP.Competitive = Reader["competitive"].ToString();
+                            current_SP.SportsOveralLevel = Reader["SportsOveralLevel"].ToString();
+                            current_SP.MaxCostAfterAid = (int)Reader["MaxCostAfterAid"];
+                            current_SP.RatioStudentFaculty = (int)Reader["RatioStudentFaculty"];
                             current_SP.ACT_Score = (int)Reader["ACT_Score"];
                             current_SP.SAT_Score = (int)Reader["SAT_Score"];
                             current_SP.GPA = (float)(Double)Reader["GPA"];
