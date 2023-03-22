@@ -15,7 +15,7 @@ namespace BoJo.Controllers
         //======== Database connection string  ======/
         
         //sql connection string
-        protected static string connString = "Server=tcp:bojosqlserver.database.windows.net,1433;Initial Catalog=BoJo;Persist Security Info=False;User ID=warlynrn;Password=BoJo2023@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        public static string connString = "Server=tcp:bojosqlserver.database.windows.net,1433;Initial Catalog=BoJo;Persist Security Info=False;User ID=warlynrn;Password=BoJo2023@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         
         //GET ACCESS 
         public IActionResult Login()
@@ -145,6 +145,7 @@ namespace BoJo.Controllers
             {
                 HttpContext.Session.SetString("user", JsonConvert.SerializeObject(cUser));
                 HttpContext.Session.SetString("userfname",cUser.Fname);
+                HttpContext.Session.SetString("userrole", cUser.Role);
                 HttpContext.Session.SetInt32("userid", cUser.IdUser);
                 return RedirectToAction("Index", "Home");
             }

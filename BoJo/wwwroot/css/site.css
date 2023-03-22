@@ -8,34 +8,59 @@
     }
 }
 
-html {
-    position: relative;
-    min-height: 100%;
+.chat-window {
+    height: 434px;
+    width: 332px;
+    border-radius: 10px;
+    padding: 16px;
+    bottom: 100px;
+    position: fixed;
+    right: 54px;
+    z-index: 9999999;
+    background-color: brown;
+    box-shadow: rgb(0 0 0 / 10%) 0px 1px 6px, rgb(0 0 0 / 20%) 0px 2px 24px;
 }
-
-body {
-    margin-bottom: 60px;
+.message-box{
+    height:345px;
+    width:100%;
+    padding-right:5px;
+    overflow:auto;
 }
-
-.chatbox {
-    background-color: #F0F8FF;
-    border: black solid 5px;
-    border-radius: 50%;
+.message-box .first-chat {
+    width: 200px;
     float: right;
-    height: 100px;
-    margin-right: -10%;
-    margin-top: 40%;
-    padding: 5px;
-    width: 100px;
+    background-color: #4c5aa1;
+    padding: 10px;
+    margin: 14px 0px;
+    border-radius: 5px;
+    color: white;
+    overflow-wrap:break-word;
 }
-
-.transform {
-    transition: all .3s ease;
+.message-box .first-chat p {
+    font-size: 13px;
+    overflow-wrap: break-word;
 }
-
-.openChatbox {
-    border-radius: 5%;
-    height: 500px;
-    margin-top: 10%;
-    width: 300px;
+.chat-window .input-box {
+    position: absolute;
+    font-size: 12px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0px 30px;
+    padding-bottom: 18px;
+    border-top: 1px solid lightgray;
+}
+.chat-window .input-box .write-reply {
+    float: left;
+}
+.chat-window .input-box .send-button {
+    float: right;
+    border: none;
+    outline: none;
+}
+.chat-window2 .input-box .send-button button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
 }

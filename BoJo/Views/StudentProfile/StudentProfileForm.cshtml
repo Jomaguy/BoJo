@@ -3,6 +3,7 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	StudentProfile SP = (StudentProfile)ViewData["StudentProfile"];
 	List<string> majors = (List<string>)ViewData["majorSelectList"];
+	//string Competitive, string SportsOveralLevel, int MaxCostAfterAid, int RatioStudentFaculty
 }
 <head>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -64,14 +65,65 @@
 				</div>
 				<div class="col-6 mb-3">
 					<h6>Program Type</h6>
-					<input type="radio" id="Small" value="Small" name="School_Size" checked="checked">
+					<input type="radio" id="Any" value="Any" name="School_Size" checked="checked">
+					<label for="Any">Any</label>
+					<br />
+					<input type="radio" id="Small" value="Small" name="School_Size" @(SP.School_Size=="Small" ? "checked='checked'":"")>
 					<label for="Small">Small</label>
 					<br />
 					<input type="radio" id="Medium" value="Medium" name="School_Size" @(SP.School_Size=="Medium" ? "checked='checked'":"")>
  					<label for="Medium">Medium</label>
 					<br />
-					<input type="radio" id="Big" value="Big" name="School_Size" @(SP.School_Size=="Big" ? "checked='checked'":"")>
- 					<label for="Big">Big</label>
+					<input type="radio" id="Large" value="Large" name="School_Size" @(SP.School_Size=="Large" ? "checked='checked'":"")>
+ 					<label for="Large">Large</label>
+				</div>
+			</div>
+			<br />
+			<div class="row pt-1">
+				<div class="col-6 mb-3">
+					<h6>Competitive Level</h6>
+					<select name="Competitive"> 
+						<!option value="Any" selected>Any</!option>
+						<!option value="Extremely" @(@SP.Competitive=="Extremely" ? "selected" : "")>Extremely</!option>
+						<!option value="Moderately" @(@SP.Competitive=="Moderately" ? "selected" : "")>Moderately</!option>
+						<!option value="Lightly" @(@SP.Competitive=="Lightly" ? "selected" : "")>Lightly</!option>
+					</select>
+				</div>
+				<div class="col-6 mb-3">
+					<h6>Sports Overall Level</h6>
+					<select name="SportsOveralLevel"> 
+						<!option value="Any" selected>Any</!option>
+						<!option value="High" @(@SP.SportsOveralLevel=="High" ? "selected" : "")>High</!option>
+						<!option value="Medium" @(@SP.SportsOveralLevel=="Medium" ? "selected" : "")>Medium</!option>
+						<!option value="Low" @(@SP.SportsOveralLevel=="Low" ? "selected" : "")>Low</!option>
+					</select>
+				</div>
+			</div>
+			<br />
+			<div class="row pt-1">
+				<div class="col-6 mb-3">
+					<h6>Max Cost After Aid</h6>
+					<select name="MaxCostAfterAid"> 
+						<!option value="0" selected>Any</!option>
+						<!option value="5000" @(@SP.MaxCostAfterAid==5000 ? "selected" : "")>5000</!option>
+						<!option value="10000" @(@SP.MaxCostAfterAid==10000 ? "selected" : "")>10000</!option>
+						<!option value="20000" @(@SP.MaxCostAfterAid==20000 ? "selected" : "")>20000</!option>
+						<!option value="30000" @(@SP.MaxCostAfterAid==30000 ? "selected" : "")>30000</!option>
+					</select>
+					<br />
+				</div>
+				<div class="col-6 mb-3">
+					<h6>Ratio Student:Faculty</h6>
+					<select name="RatioStudentFaculty"> 
+						<!option value="0" selected>Any</!option>
+						<!option value="5" @(@SP.RatioStudentFaculty==5 ? "selected" : "")>5:1</!option>
+						<!option value="10" @(@SP.RatioStudentFaculty==10 ? "selected" : "")>10:1</!option>
+						<!option value="15" @(@SP.RatioStudentFaculty==15 ? "selected" : "")>15:1</!option>
+						<!option value="20" @(@SP.RatioStudentFaculty==20 ? "selected" : "")>20:1</!option>
+						<!option value="25" @(@SP.RatioStudentFaculty==25 ? "selected" : "")>25:1</!option>
+						<!option value="30" @(@SP.RatioStudentFaculty==30 ? "selected" : "")>30:1</!option>
+						<!option value="50" @(@SP.RatioStudentFaculty==35 ? "selected" : "")>35:1</!option>
+					</select>
 				</div>
 			</div>
 			<h6>Test Score</h6>

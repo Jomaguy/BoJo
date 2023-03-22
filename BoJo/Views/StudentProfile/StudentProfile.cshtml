@@ -56,6 +56,26 @@
             <p class="text-muted">@if (SP.School_Size != null) { @SP.School_Size; }</p>
         </div>
     </div>
+    <div class="row pt-1">
+        <div class="col-6 mb-3">
+            <h6>Competitive Level</h6>
+            <p class="text-muted">@if (SP.Competitive != null) { @SP.Competitive; }</p>
+        </div>
+        <div class="col-6 mb-3">
+            <h6>Sports Overal Level</h6>
+            <p class="text-muted">@if (SP.SportsOveralLevel != null) { @SP.SportsOveralLevel; }</p>
+        </div>
+    </div>
+    <div class="row pt-1">
+        <div class="col-6 mb-3">
+            <h6>Max Cost After Aid</h6>
+            <p class="text-muted">@(SP.MaxCostAfterAid!=0 ? SP.MaxCostAfterAid : "Any")</p>
+        </div>
+        <div class="col-6 mb-3">
+            <h6>Ratio Student:Faculty</h6>
+            <p class="text-muted">@(SP.RatioStudentFaculty!=0 ? SP.RatioStudentFaculty+":1" : "Any")</p>
+        </div>
+    </div>
     <h6>Test Score</h6>
     <hr class="mt-0 mb-4">
     <div class="row pt-1">

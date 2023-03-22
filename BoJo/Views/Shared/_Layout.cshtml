@@ -35,11 +35,17 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="ChatRoom">Chat</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Premium">Premium</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Institutions" asp-action="Institution">Institution</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Matches" asp-action="DisplayUniversities">Match</a>
+                        </li>
+                        @if (Context.Session.GetString("userrole") != "premium")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="Index">Premium</a>
+                            </li>
+                        }
                     </ul>
                 </div>
                 <div style="float:right">
