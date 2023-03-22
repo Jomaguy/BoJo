@@ -153,7 +153,7 @@ namespace BoJo.Controllers
         public float CalcPreferenceMatch(StudentProfile SP, Institution CI)
         {
             double score = 0;
-            double possible_score = 9;
+            double possible_score = 8;
             if (SP.Location == CI.region || SP.Location=="Any") { score += 1; }
             if (SP.School_Size == CI.size || SP.School_Size == "Any") { score += 1; }
             if (CI.majors.Contains(SP.Major) || SP.Major == "Undecided") { score += 1; }
@@ -162,7 +162,6 @@ namespace BoJo.Controllers
             if (SP.RatioStudentFaculty == CI.RatioStudentFaculty || SP.RatioStudentFaculty == 0) { score += 1; }
             if ((SP.ProgramType == "Graduate" && CI.GraduateProgram == true) || SP.ProgramType == "Undergraduate") { score += 1; }
             if (SP.MaxCostAfterAid>=CI.average_cost_after_aid || SP.MaxCostAfterAid==0) { score += 1; }
-            if (SP.RatioStudentFaculty >= CI.RatioStudentFaculty || SP.RatioStudentFaculty == 0) { score += 1; }
 
             return (float)Math.Round(score / possible_score * 100, 2);
         }
