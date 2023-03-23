@@ -26,3 +26,20 @@ $("#closeButton").click(function () {
         open = false;
     }
 });
+
+function chatOpen() {
+    $("#chat-open-button").click(function () {
+        document.getElementById("chat-window").style.display = 'block';
+        document.getElementById("chat-close").style.display = 'block';
+    });
+}
+
+function chatClose() {
+    document.getElementById("chat-window").style.display = 'none';
+    document.getElementById("chat-open-button").style.display = 'block';
+    document.getElementById("chat-close").style.display = 'none';
+}
+
+function clearField() {
+    setTimeout(() => { document.getElementById("textInput").value = ""; }, 100);
+}

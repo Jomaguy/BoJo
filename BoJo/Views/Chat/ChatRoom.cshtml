@@ -6,6 +6,7 @@
 @{
     ViewData["Title"] = "ChatRoom";
     var lastId = 0;
+    var currUser = Context.Session.GetInt32("userid");
     var messages = (List<Message>)ViewData["MessageObject"];
 
     if (messages != null && messages.Count > 0)
@@ -13,12 +14,29 @@
         lastId = messages[messages.Count - 1].MessageId;
     }
 }
+<div class="chat-bubble" id="chat-bubble">
+    <button id="chat-open-button"
+            type="button"
+            class="collapsible close"
+            onclick="chatOpen()">
+        <img src="~\Image\speechBubble.png" alt="Sparrow Bird image" />
+    </button>
+</div>
+
+<div class="chat-img-close" id="chat-close">
+    <button id="chat-close-button"
+            type="button"
+            class="collapsible close"
+            onclick="chatClose()">
+        <i class="material-icons-outlined"> close </i>
+    </button>
+</div>
+
 <div class="chat-window" id="chat-window">
+    <div class="speak-with-rep" id="speak-with-rep">
+        <p>Hello, a representative we'll be with you shortly.</p>
+    </div>
     <div class="message-box" id="message-box">
-        <div class="hi-there">
-            <p class="p1">Hi there</p>
-            <br />
-        </div>
         <div class="chat">
             @if (messages!=null) {
                 @foreach(var msgs in messages) {
@@ -27,7 +45,8 @@
                         <div class="first-chat">
                             <p>@msgs.Text</p>
                         </div>                       
-                    } else
+                    } 
+                    else
                     {
                         <div class="second-chat">
                             <p>@msgs.Text</p>
@@ -42,7 +61,7 @@
             <input class="inputText" type="text" id="textInput" placeholder="Write a reply..."/>
         </div>
         <div class="send-button">
-            <button type="submit" class="send-message" id="send">send</button>
+            <button type="submit" class="send-message" id="send" onclick="clearField()">send</button>
         </div>
     </div>
 </div>
@@ -60,8 +79,9 @@
                 data: msg,
                 datatype:'json',
                 success: function (data){
+                    //THIS AJAX FUNCTION IS PROBABLY NOT NECCESSARY;
                     //APPEND NEW CHAT BUBBLES TO CHAT DIV
-                    $(".chat").append(`<div class="first-chat"><p> ${data} </p></div>`);
+                    //$(".chat").append(`<div class="first-chat"><p> ${data} </p></div>`);
                 },
                 error: function(res){
                     alert("ERROR");
@@ -72,7 +92,7 @@
 </script>
 <script>
     $(document).ready(function() {
-
+        var lastId = @lastId;
         setInterval(fetchMessage,1000);
 
         function fetchMessage() {
@@ -81,10 +101,15 @@
                 url: '@Url.Action("GetLatestMessage","Chat")',
                 datatype:'json',
                 success: function(data) {   
-                    //alert(data["messageId"]);
                     var id = Number(data.messageId);
-                    if(@lastId > id){
-                        $(".chat").append(`<div class="first-chat"><p> ${data} </p></div>`);
+                    console.log(data);
+                    if(lastId < id){
+                        lastId++;
+                        if(Number(data.userId) == @currUser) {
+                            $(".chat").append(`<div class="first-chat"><p> ${data.text} </p></div>`);
+                        } else {
+                            $(".chat").append(`<div class="second-chat"><p> ${data.text} </p></div>`);
+                        }
                     }
                 },
                 error: function(res){

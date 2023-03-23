@@ -37,7 +37,7 @@ namespace BoJo.Controllers
                 }
                 else
                 {
-                    Console.Write("CXReatinmg new chatroom lijkhagsdfjklhasldkhfjkals");
+
                     SqlCommand cmd2 = new SqlCommand("INSERT INTO ChatRoom (Status, Created, UserId) VALUES('Active', @time, @uid)",conn);
                     cmd2.Parameters.AddWithValue("@uid", HttpContext.Session.GetInt32("userid"));
                     cmd2.Parameters.AddWithValue("@time", DateTime.Now);
