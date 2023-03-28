@@ -44,18 +44,11 @@
                         const element = document.getElementById('paypal-button-container');
                         element.innerHTML = '';
                         element.innerHTML = '<h3>Thank you for your payment!</h3>';
-                        alert(JSON.stringify(orderData));
 
-                        // Or go to another URL:  actions.redirect('thank_you.html');
-
-                        // this is where we update the users status to premium
-                        // how to get something about the user to update the account
-                        // data is just paypal information
-                        // orderData has the user's paypal email and full name and address
-
+                        // call controller to update user to premium
                         $.ajax({
                             type: "POST",
-                            url: '@Url.Action("BecomePremium", "Payment")?data='+JSON.stringify(orderData, null, 2)+" otro:"+JSON.stringify(data, null, 2)
+                            url: '@Url.Action("BecomePremium", "Payment")?data='+JSON.stringify(orderData, null, 2)+"otro:"+JSON.stringify(data, null, 2)
                         })
                     });
                 },
