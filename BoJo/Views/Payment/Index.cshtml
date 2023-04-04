@@ -28,7 +28,9 @@
 
                 createOrder: function (data, actions) {
                     return actions.order.create({
-                        purchase_units: [{ "description": "Premium", "amount": { "currency_code": "USD", "value": 0.50 } }]
+
+                    purchase_units: [{ "description": "Premium", "amount": { "currency_code": "USD", "value": 0.50 } }]
+
                     });
                 },
 
@@ -43,11 +45,11 @@
                         element.innerHTML = '';
                         element.innerHTML = '<h3>Thank you for your payment!</h3>';
 
-                        // Or go to another URL:  actions.redirect('thank_you.html');
+                        // call controller to update user to premium
                         $.ajax({
                             type: "POST",
-                            url: '@Url.Action("BecomePremium", "Payment")?data='+JSON.stringify(orderData, null, 2)+" otro:"+JSON.stringify(data, null, 2)
-                        });
+                            url: '@Url.Action("BecomePremium", "Payment")?data='+JSON.stringify(orderData, null, 2)+"otro:"+JSON.stringify(data, null, 2)
+                        })
                     });
                 },
 

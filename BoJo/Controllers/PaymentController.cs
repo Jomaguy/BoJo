@@ -37,7 +37,7 @@ namespace BoJo.Controllers
                     "where IdUser = @id",
                     conn); //query
 
-                //===== set up procesure's parameters ============//
+                //===== set up procedure's parameters ============//
                 cmd.Parameters.AddWithValue("id", HttpContext.Session.GetInt32("userid"));
 
                 //open connection
@@ -49,7 +49,6 @@ namespace BoJo.Controllers
                 conn.Close();
             }
              return RedirectToAction("Index", "Home");
-
         }
     }
 }
