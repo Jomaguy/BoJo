@@ -1,8 +1,10 @@
 ﻿
 @{
-    ViewData["Title"] = "Login";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Login";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
+
 <head>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -38,21 +40,42 @@
 								</div>
 							}
 						</div>
-							<div class="d-flex justify-content-center mt-3 login_container">
-				 	<button type="submit" name="button" class="btn btn-primary">Login</button>
-				   </div>
+						<div class="d-flex justify-content-center mt-3 login_container">
+				 			<button type="submit" name="button" class="btn btn-primary">Login</button>
+						</div>
 					</form>
 				</div>
-		
+				<div style="color:red;font-size:15px;">
+					@if(ViewData["Confirmed"] != null && ViewData["Confirmed"]=="false"){
+						<p>please confirm your email before loggin in (check your email:@Context.Session.GetString("emailtoconfirm"))</p>
+						<button onclick="sendconfirmation()">Resend Confirmation Email</button>
+					}
+				</div>
 				<div class="mt-4">
 					<div class="d-flex justify-content-center links">
 						Don't have an account? <a href="@Url.Action("Register","Access")" class="ml-2">Sign Up</a>
 					</div>
 					<div class="d-flex justify-content-center links">
-						<a href="#">Forgot your password?</a>
+						<a href="@Url.Action("ForgotPassword","Access")">Forgot your password?</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	function sendconfirmation() {
+        var email = '@Context.Session.GetString("emailtoconfirm")';
+		$.ajax({
+			url: '/Access/sendconfirmation?email='+email,
+			type: 'POST',
+			success: function (result) {
+                alert("Confirmation email sent to: " + email);
+			},
+			error: function(result) {
+				alert("error");
+			}
+		});
+    };
+</script>

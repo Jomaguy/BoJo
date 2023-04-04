@@ -68,9 +68,14 @@ namespace ProCodeGuide.Samples.FileUpload.Controllers
 
         public IActionResult Index()
         {
+            
             //only allow logged in users
             if (HttpContext.Session.GetInt32("userid") != null)
             {
+                if (HttpContext.Session.GetString("userrole") != "premium")
+                {
+                    return RedirectToAction("Index", "Payment");
+                }
                 //get new list of files
                 List<UserFiles> user_files = _bufferedFileUploadService.GetFiles(HttpContext.Session.GetInt32("userid")); //get files
                 //pass list to html view                                                                                     //pass the files to html view
