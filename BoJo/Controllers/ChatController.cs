@@ -34,6 +34,7 @@ namespace BoJo.Controllers
                 if(id != null && id != -1)
                 {
                     return id;
+                    //return 17;
                 }
                 else
                 {
@@ -58,7 +59,7 @@ namespace BoJo.Controllers
             }
             List<Message> messages = new List<Message>();
             int ChatId = GetChatRoomId();
-
+            
             using (SqlConnection conn = new SqlConnection(DBSTRING))
             {
                 SqlCommand MessageCmd = new SqlCommand("SELECT * FROM Message WHERE ChatRoomId = @id ORDER BY Created", conn);
@@ -88,6 +89,7 @@ namespace BoJo.Controllers
         public IActionResult GetLatestMessage()
         {
             int ChatId = GetChatRoomId();
+
             using (SqlConnection conn = new SqlConnection(DBSTRING))
             {
                 SqlCommand getMessage = new SqlCommand("SELECT * FROM Message WHERE ChatroomId = @id AND MessageId=(SELECT max(MessageId) FROM Message)", conn);

@@ -10,6 +10,6 @@
         public string ComfirmPassword { get; set; }
         public string DOB { get; set; }
         public string Role { get; set; } = "regular";
-
+        public bool Confirmed { get; set; }
     }
 }

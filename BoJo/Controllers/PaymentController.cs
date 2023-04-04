@@ -11,7 +11,12 @@ namespace BoJo.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (HttpContext.Session.GetInt32("userid") != null)
+            {
+                return View();
+            }
+            //if not registrated
+            return RedirectToAction("Login", "Access");
         }
 
         [HttpPost]

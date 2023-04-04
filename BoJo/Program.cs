@@ -1,11 +1,16 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using BoJo.Services;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<IBufferedFileUploadService, BufferedFileUploadLocalService>();
 
+
 //=== ADDs Access ===//
+builder.Services.AddTransient<IEmailSender, EmailSender>();//email sender
+
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(option =>
 {
