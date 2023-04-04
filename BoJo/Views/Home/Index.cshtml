@@ -72,6 +72,12 @@
 
 </body>
 
-
-
-
+<div id="chatbox"></div>
+@if (Context.Session.GetInt32("userid") != null)
+{
+    @section Scripts {
+    <script>
+        $('#chatbox').load("/Chat/ChatRoom")
+    </script>
+    }
+}

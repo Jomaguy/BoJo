@@ -58,3 +58,11 @@
         }
         initPayPalButton();</script>
 </body>
+
+<div id="chatbox"></div>
+
+@section Scripts {
+    <script>
+        $('#chatbox').load("/Chat/ChatRoom")
+    </script>
+}

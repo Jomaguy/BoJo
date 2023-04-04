@@ -31,6 +31,7 @@ function chatOpen() {
     $("#chat-open-button").click(function () {
         document.getElementById("chat-window").style.display = 'block';
         document.getElementById("chat-close").style.display = 'block';
+        document.getElementById("chatimage").style.display = 'none';
     });
 }
 
@@ -38,6 +39,7 @@ function chatClose() {
     document.getElementById("chat-window").style.display = 'none';
     document.getElementById("chat-open-button").style.display = 'block';
     document.getElementById("chat-close").style.display = 'none';
+    document.getElementById("chatimage").style.display = 'block';
 }
 
 function clearField() {

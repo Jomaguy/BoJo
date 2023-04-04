@@ -19,10 +19,10 @@
             type="button"
             class="collapsible close"
             onclick="chatOpen()">
-        <img src="~/Images/speechBubble.png" alt="Sparrow Bird image" />
+        <img src="~/images/speechBubble.png" style="height:90px"alt="Sparrow Bird image" id="chatimage"/>
     </button>
 </div>
-
+<img src="c:\users\red99\source\repos\jomaguy\bojo\bojo\images\speechbubble.png" />
 <div class="chat-img-close" id="chat-close">
     <button id="chat-close-button"
             type="button"
@@ -38,14 +38,16 @@
     </div>
     <div class="message-box" id="message-box">
         <div class="chat">
-            @if (messages!=null) {
-                @foreach(var msgs in messages) {
+            @if (messages != null)
+            {
+                @foreach (var msgs in messages)
+                {
                     @if (msgs.UserId == Context.Session.GetInt32("userid"))
                     {
                         <div class="first-chat">
                             <p>@msgs.Text</p>
-                        </div>                       
-                    } 
+                        </div>
+                    }
                     else
                     {
                         <div class="second-chat">
@@ -58,7 +60,7 @@
     </div>
     <div class="input-box">
         <div class="write-reply">
-            <input class="inputText" type="text" id="textInput" placeholder="Write a reply..."/>
+            <input class="inputText" type="text" id="textInput" placeholder="Write a reply..." />
         </div>
         <div class="send-button">
             <button type="submit" class="send-message" id="send" onclick="clearField()">send</button>
@@ -70,49 +72,49 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#send").click( function () {
+        $("#send").click(function () {
             var msg = $("#textInput").val();
 
             $.ajax({
-                type:"POST",
-                url:'@Url.Action("CreateMessage","Chat")?messageBox=' + msg,
+                type: "POST",
+                url: '@Url.Action("CreateMessage","Chat")?messageBox=' + msg,
                 data: msg,
-                datatype:'json',
-                success: function (data){
+                datatype: 'json',
+                success: function (data) {
                     //THIS AJAX FUNCTION IS PROBABLY NOT NECCESSARY;
                     //APPEND NEW CHAT BUBBLES TO CHAT DIV
                     //$(".chat").append(`<div class="first-chat"><p> ${data} </p></div>`);
                 },
-                error: function(res){
+                error: function (res) {
                     alert("ERROR");
                 }
             });
         });
-    });    
+    });
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         var lastId = @lastId;
-        setInterval(fetchMessage,1000);
+        setInterval(fetchMessage, 1000);
 
         function fetchMessage() {
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("GetLatestMessage","Chat")',
-                datatype:'json',
-                success: function(data) {   
+                datatype: 'json',
+                success: function (data) {
                     var id = Number(data.messageId);
                     console.log(data);
-                    if(lastId < id){
-                        lastId++;
-                        if(Number(data.userId) == @currUser) {
+                    if (lastId < id) {
+                        lastId = id;
+                        if (Number(data.userId) == @currUser) {
                             $(".chat").append(`<div class="first-chat"><p> ${data.text} </p></div>`);
                         } else {
                             $(".chat").append(`<div class="second-chat"><p> ${data.text} </p></div>`);
                         }
                     }
                 },
-                error: function(res){
+                error: function (res) {
                     alert("ERROR");
                 }
             });

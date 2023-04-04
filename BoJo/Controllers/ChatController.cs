@@ -82,7 +82,7 @@ namespace BoJo.Controllers
                 ViewData["MessageObject"] = messages;
             }
 
-            return View();
+            return PartialView("_Chatroom");
         }
         [HttpGet]
         public IActionResult GetLatestMessage()
