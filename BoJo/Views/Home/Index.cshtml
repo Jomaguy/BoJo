@@ -4,17 +4,27 @@
 
 <style>
 
- .column {
-  float: left;
-  width: 50%;
-  padding: 10px;
- }
+.FirstDiv{
+  background-color: #3898eb;
+  height: 40px;
+}
 
+.SecondDiv {
+  position: relative;
+  text-align: center;
+  color: white;
+}
 
-.button-1 {
-  background-color: blue; 
+.ThirdDiv{
+font: Verdana;
+
+}
+
+ .button-1 {
+  background-color: #3898eb; 
   border: none;
   color: white;
+  font: Verdana;
   padding: 20px;
   text-align: center;
   text-decoration: none;
@@ -25,59 +35,71 @@
   border-radius: 12px;
 }
 
-
 .text-block-2 {
   display: inline-block;
-  margin-left: 4px;
+  font: Verdana;
   padding-right: 4px;
-  padding-left: 11px;
+  padding-left: 4px;
 }
 
-.columns {
-  margin-left: 0px;
+.BoJoBottom{
+  font:Verdana;
+  color: White;
 }
 
-.paragraph {
-  display: inline-block;
-  max-width: 25px;
+.FirstBoJo{
+  text-align: center;
+  color:Black;
+  font: Verdana; 
 }
 
-.paragraph-2 {
-  display: block;
-  max-width: 500px;
-  margin-top: 20px;
+.LastBoJo{
+  text-align: center;
+  color:White;
+  font: Verdana;
 }
 
+p{
+  width: 600px;
+}
+
+.centered {
+  font-size: 70px;
+  position: absolute;
+  color:#3898eb; ;
+  top: 15%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+}
+.image{
+  height: 70%;
+  max-width: 100%;
+}
 
 </style>
 
-<body>
-
-<div class="row">
-  <div class="column">
-
-     <h1>Find the university that fits you the best.</h1>
-      <div class="text-block-3">Get matched with universities that fit you the best based on your interests, preferences, test scores, and financial situation. </div>
-      <a href="#" class="button-1">Try us for free</a>
-      <div class="text-block-2">or</div>
-      <div class="text-block-2">Take the tour</div>
-      <p class="paragraph-2">COT question: 1-800-381-7241 or email at nobody@gmail.com</p>
-  </div>
-
-  <div class="column">
-    <img src= "BoJo/Image/graduation.jpg" alt="Picture is not loaded properly"> 
-
-  </div>
+<div class = "FirstDiv">
 </div>
 
-</body>
 
-<div id="chatbox"></div>
-@if (Context.Session.GetInt32("userid") != null)
-{
-    @section Scripts {
-    <script>
-        $('#chatbox').load("/Chat/ChatRoom")
-    </script>
-    }
-}
+<div class="SecondDiv">
+  <img  class ="image" src="~/Images/Graduation.jpg"; />
+  <div class="centered">BoJo</div>
+</div>
+
+<div class = "FirstDiv"> 
+</div>
+
+<div class = "ThirdDiv"> 
+  <h1> Find the university for you</h1>
+  <p > Get matched with universities that fit you the best based on your interests, preferences, test scores, and financial situation. </p>
+  <a href="#" class="button-1">Try us for free</a>
+  <div class="text-block-2">or</div>
+  <div class="text-block-2">Take the tour</div>
+  <p style = "font: Serif">COT question: 1-800-381-7241 or email at nobody@gmail.com</p>
+
+</div>
+
+<div style = "background-color: #3898eb";>
+  <h1 class="LastBoJo">BoJo</h1>
+</div>
