@@ -62,7 +62,7 @@ namespace BoJo.Controllers
                             current_institution.region = Reader["region"].ToString();
                             current_institution.level = Reader["level"].ToString();
                             current_institution.control = Reader["control"].ToString();
-                            current_institution.size = Reader["size"].ToString();
+                            current_institution.size = (int)Reader["size"];
 
                             //new
                             current_institution.Competitive = Reader["Competitive"].ToString();
@@ -80,6 +80,12 @@ namespace BoJo.Controllers
                             current_institution.average_GPA = (float)(Double)Reader["average_GPA"];
                             current_institution.average_SAT = (int)Reader["average_SAT"];
                             current_institution.average_ACT = (int)Reader["average_ACT"];
+
+                            //new
+                            current_institution.climate = Reader["climate"].ToString();
+                            current_institution.dorming_percentage = (float)(Double)Reader["dorming_percentage"];
+                            current_institution.greek_life = Convert.ToBoolean(Reader["greek_life"].ToString());
+
                         }
                     }
                     //conn

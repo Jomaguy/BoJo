@@ -19,8 +19,14 @@
             <h6>Average Accepted SAT score @institution.average_SAT</h6>
             <h6>Average Accepted ACT score @institution.average_ACT</h6>
             <h6>Ratio Student-Faculty: @institution.RatioStudentFaculty : 1.</h6>
+            <h6>Size (undergraduate + graduate): @institution.size </h6>
+            <h6>Dorming Percentage: @institution.dorming_percentage</h6>
+            <h6>Climate: @institution.climate </h6>
             @if(institution.GraduateProgram==true){
                 <h6>Graduate Program Available.</h6>
+            }
+            @if(institution.greek_life==true){
+                <h6>Greek Life On Campus.</h6>
             }
             <br />
             <h6>Sport Overal Level: @institution.SportsOveralLevel</h6>

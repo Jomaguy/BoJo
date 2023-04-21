@@ -49,7 +49,12 @@ namespace BoJo.Controllers
             return RedirectToAction("Login", "Access");
         }
         [HttpPost]
-        public IActionResult StudentProfileForm(string ProgramType, string Major, string Location, string School_Size, string Competitive, string SportsOveralLevel, int MaxCostAfterAid, int RatioStudentFaculty, int ACT_Score, int SAT_Score, float GPA,float GPA_outof)
+        public IActionResult StudentProfileForm(string ProgramType, 
+            string Major, string Location, int School_Size, 
+            string Competitive, string SportsOveralLevel, int MaxCostAfterAid, 
+            int RatioStudentFaculty, int ACT_Score, int SAT_Score, float GPA,
+            float GPA_outof, string greek_life,float dorming_percentage,string climate,
+            string control, string minor)
         {
             //==== SQL Query ====//
             using (SqlConnection conn = new SqlConnection(connString))
@@ -71,6 +76,11 @@ namespace BoJo.Controllers
                 cmd.Parameters.AddWithValue("SAT_Score", SAT_Score);
                 cmd.Parameters.AddWithValue("GPA", GPA);
                 cmd.Parameters.AddWithValue("GPA_outof", GPA_outof);
+                cmd.Parameters.AddWithValue("greek_life", greek_life);
+                cmd.Parameters.AddWithValue("dorming_percentage", dorming_percentage);
+                cmd.Parameters.AddWithValue("climate", climate);
+                cmd.Parameters.AddWithValue("control", control);
+                cmd.Parameters.AddWithValue("minor", minor);
 
                 //type of command
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -117,7 +127,7 @@ namespace BoJo.Controllers
                             current_SP.ProgramType = Reader["ProgramType"].ToString();
                             current_SP.Major = Reader["Major"].ToString();
                             current_SP.Location = Reader["Location"].ToString();
-                            current_SP.School_Size = Reader["School_Size"].ToString();
+                            current_SP.School_Size = (int)Reader["School_Size"];
                             current_SP.Competitive = Reader["competitive"].ToString();
                             current_SP.SportsOveralLevel = Reader["SportsOveralLevel"].ToString();
                             current_SP.MaxCostAfterAid = (int)Reader["MaxCostAfterAid"];
@@ -126,6 +136,11 @@ namespace BoJo.Controllers
                             current_SP.SAT_Score = (int)Reader["SAT_Score"];
                             current_SP.GPA = (float)(Double)Reader["GPA"];
                             current_SP.GPA_outof = (float)(Double)Reader["GPA_outof"];
+                            current_SP.dorming_percentage = (float)(Double)Reader["dorming_percentage"];
+                            current_SP.climate = Reader["climate"].ToString();
+                            current_SP.control = Reader["control"].ToString();
+                            current_SP.minor = Reader["minor"].ToString();
+                            current_SP.greek_life = Reader["greek_life"].ToString();
                         }
                     }
                     //conn

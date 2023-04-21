@@ -42,14 +42,16 @@ namespace BoJo.Controllers
         {
             //variables initiation
             int pref_size = 3;  //amount of universities matches
-            List<Institution> institutions = new List<Institution>(new Institution[pref_size]);
-            List<UniversityMatches> matches = new List<UniversityMatches>();
+            List<UniversityMatches> matches = new List<UniversityMatches>(new UniversityMatches[pref_size*3]);
+            List<Institution> safe_schools = new List<Institution>(new Institution[pref_size]);
+            List<Institution> fit_schools = new List<Institution>(new Institution[pref_size]);
+            List<Institution> reach_schools = new List<Institution>(new Institution[pref_size]);
 
             //get student preferences
             StudentProfile SP = GetSPInformation(HttpContext.Session.GetInt32("userid"));
 
             //check if necesary fields are filled
-            if (SP.Major == null || SP.Location == null || SP.School_Size == null || SP.Competitive==null || SP.SportsOveralLevel==null || SP.ProgramType == null)
+            if (SP.Major=="")
             {
                 return null;
             }
@@ -71,79 +73,167 @@ namespace BoJo.Controllers
                         current_institution.name = Reader["name"].ToString();
                         current_institution.about = Reader["about"].ToString();
                         current_institution.region = Reader["region"].ToString();
-                        current_institution.size = Reader["size"].ToString();
+                        current_institution.size = (int)Reader["size"];
 
                         //new
                         current_institution.Competitive = Reader["Competitive"].ToString();
                         current_institution.SportsOveralLevel = Reader["SportsOveralLevel"].ToString();
                         current_institution.RatioStudentFaculty = (int)Reader["RatioStudentFaculty"];
                         current_institution.GraduateProgram = Convert.ToBoolean(Reader["GraduateProgram"].ToString());
-                        //
-                        
                         current_institution.majors = JsonConvert.DeserializeObject<List<string>>(Reader["majors"].ToString());
                         current_institution.total_cost = (float)(Double)Reader["total_cost"];
-
-                        //current_institution.average_GPA = (float)(Double)Reader["average_GPA"];
-                        //current_institution.average_SAT = (int)Reader["average_SAT"];
-                        //current_institution.average_ACT = (int)Reader["average_ACT"];
-                        //current_institution.acceptance_rate = (float)(Double)Reader["acceptance_rate"];
-                        //current_institution.graduation_rate = (float)(Double)Reader["graduation_rate"];
-                        //current_institution.average_cost_after_aid = (float)(Double)Reader["average_cost_after_aid"];
-                        //current_institution.apply_url = Reader["apply_url"].ToString();
-                        //current_institution.website_url = Reader["website_url"].ToString();
-                        //current_institution.level = Reader["level"].ToString();
-                        //current_institution.control = Reader["control"].ToString();
-                        //current_institution.address = Reader["address"].ToString();
-                        //current_institution.city = Reader["city"].ToString();
-                        //current_institution.state = Reader["state"].ToString();
-                        //current_institution.zip = Reader["zip"].ToString();
-                        //current_institution.tel_num = Reader["tel_num"].ToString();
+                        current_institution.average_cost_after_aid = (float)(Double)Reader["average_cost_after_aid"];
+                        current_institution.control = Reader["control"].ToString();
+                        
+                        //newshii=======
+                        current_institution.climate = Reader["climate"].ToString();
+                        current_institution.dorming_percentage = (float)(Double)Reader["dorming_percentage"];
+                        current_institution.greek_life = Convert.ToBoolean(Reader["greek_life"].ToString());
+                        current_institution.SAT_25th = (int)Reader["SAT_25th"];
+                        current_institution.SAT_75th = (int)Reader["SAT_75th"];
+                        current_institution.ACT_25th = (int)Reader["ACT_25th"];
+                        current_institution.ACT_75th = (int)Reader["ACT_75th"];
+                        current_institution.GPA_25th = (float)(Double)Reader["GPA_25th"];
+                        current_institution.GPA_75th = (float)(Double)Reader["GPA_75th"];
 
                         //============== CALCULATE ================//
                         //get match % for current institution
                         float current_score = CalcPreferenceMatch(SP, current_institution);
+                        float admissionchances = EstimateAdmission(SP.SAT_Score,SP.ACT_Score,SP.GPA, current_institution.SAT_25th, current_institution.SAT_75th, current_institution.ACT_25th, current_institution.ACT_75th, current_institution.GPA_25th, current_institution.ACT_75th);
                         current_institution.preference_match_percent = current_score;
-
-                        //how many nulls in list
-                        int nulls = institutions.Count(i => i == null);
-
-                        //check if there any item with a match % less than the current institution's match %
-                        //also takes in consideration cases where the array is empty
-                        if (nulls != 0 || institutions.Any(i => i.preference_match_percent >= current_score))
+                        current_institution.admission_match_percent = admissionchances;
+                        
+                        //=============== INSERT IN CORRESPONDING CATEGORY ===========//
+                        //safe
+                        if (admissionchances >= 80.0)
                         {
-                            //insert university
-                            if (nulls != 0)
+                            //how many nulls in list
+                            int s_nulls = safe_schools.Count(i => i == null);
+                            //check if there any item with a match % less than the current institution's match %
+                            //also takes in consideration cases where the array is empty
+                            if (s_nulls != 0 || safe_schools.Any(i => i.preference_match_percent * i.admission_match_percent <= current_score*admissionchances))
                             {
-                                institutions[nulls - 1] = current_institution;
+                                //insert university
+                                if (s_nulls != 0)
+                                {
+                                    //if there are empty spaces
+                                    safe_schools[s_nulls - 1] = current_institution;
+                                }
+                                else
+                                {
+                                    //if there are no empty spaces we have to substitude the one with the lowest preference*admission 
+                                    safe_schools = safe_schools.OrderBy(i => i.preference_match_percent * i.admission_match_percent).ToList();
+                                    safe_schools[0] = current_institution;
+                                }
                             }
-                            else
+
+                        } //safe
+
+                        //fit from 40-80
+                        else if (admissionchances < 80.0 && admissionchances >= 40.0)
+                        {
+                            //how many nulls in list
+                            int f_nulls = fit_schools.Count(i => i == null);
+
+                            if (f_nulls != 0 || fit_schools.Any(i => i.preference_match_percent * i.admission_match_percent <= current_score * admissionchances))
                             {
-                                institutions[pref_size - 1] = current_institution;
-                                institutions.OrderByDescending(i => i.preference_match_percent).ToList();
+                                //insert university
+                                if (f_nulls != 0)
+                                {
+                                    fit_schools[f_nulls - 1] = current_institution;
+                                }
+                                else
+                                {
+                                    fit_schools = fit_schools.OrderBy(i => i.preference_match_percent*i.admission_match_percent).ToList();
+                                    fit_schools[0] = current_institution;
+                                }
+                            }
+
+                        } //fit
+
+                        //reach
+                        else {
+                            //how many nulls in list
+                            int r_nulls = reach_schools.Count(i => i == null);
+                            if (r_nulls != 0 || reach_schools.Any(i => i.preference_match_percent * i.admission_match_percent <= current_score * admissionchances))
+                            {
+                                //insert university
+                                if (r_nulls != 0)
+                                {
+                                    reach_schools[r_nulls - 1] = current_institution;
+                                }
+                                else
+                                {
+                                    reach_schools = reach_schools.OrderBy(i => i.preference_match_percent * i.admission_match_percent).ToList();
+                                    reach_schools[0] = current_institution;
+                                }
                             }
                         }
+                        //done getting match categories
                     }
                 }
 
-                //sort on Descending Order
-                institutions = institutions.OrderByDescending(i => i.preference_match_percent).Take(pref_size).ToList();
+                //sort on Descending Order - keep NULL if needed
+                safe_schools = safe_schools.OrderByDescending(i => i == null ? -1 : i.admission_match_percent).ToList();
+                fit_schools = fit_schools.OrderByDescending(i => i==null ? -1 : i.admission_match_percent).ToList();
+                reach_schools = reach_schools.OrderByDescending(i => i == null ? -1 : i.admission_match_percent).ToList();
 
-                //Copy to Jonathan's format
+                //make into Jonathan's format for displying 
                 int index = 0;
-                foreach (Institution i in institutions)
-                {
-                    UniversityMatches current = new UniversityMatches();
-                    current.UniversityNumber = i.institutionID;
-                    current.UniversityName = i.name;
-                    current.Size = i.size;
-                    current.TuitonAndFees = i.total_cost;
-                    current.Overview = i.about;
-                    current.preference_match_percent = i.preference_match_percent;
-                    current.admission_match_percent = 50;//as for now
 
-                    matches.Add(current);
+                //insert safe schools
+                foreach (Institution ss in safe_schools)
+                {
+                    UniversityMatches safe = new UniversityMatches();
+                    if (ss != null)
+                    {
+                        safe.UniversityNumber = ss.institutionID;
+                        safe.UniversityName = ss.name;
+                        safe.Size = ss.size;
+                        safe.TuitonAndFees = ss.total_cost;
+                        safe.Overview = ss.about;
+                        safe.preference_match_percent = ss.preference_match_percent;
+                        safe.admission_match_percent = ss.admission_match_percent;//as for now
+                    }
+                    matches[index] = safe;
+                    index++;
                 }
 
+                //insert fit schools
+                foreach (Institution fs in fit_schools)
+                {
+                    UniversityMatches fit = new UniversityMatches();
+                    if (fs != null)
+                    {
+                        fit.UniversityNumber = fs.institutionID;
+                        fit.UniversityName = fs.name;
+                        fit.Size = fs.size;
+                        fit.TuitonAndFees = fs.total_cost;
+                        fit.Overview = fs.about;
+                        fit.preference_match_percent = fs.preference_match_percent;
+                        fit.admission_match_percent = fs.admission_match_percent;//as for now
+                    }
+                    matches[index] = fit;
+                    index++;
+                }
+
+                //insert reach schools
+                foreach (Institution rs in reach_schools)
+                {
+                    UniversityMatches reach = new UniversityMatches();
+                    if (rs != null)
+                    {
+                        reach.UniversityNumber = rs.institutionID;
+                        reach.UniversityName = rs.name;
+                        reach.Size = rs.size;
+                        reach.TuitonAndFees = rs.total_cost;
+                        reach.Overview = rs.about;
+                        reach.preference_match_percent = rs.preference_match_percent;
+                        reach.admission_match_percent = rs.admission_match_percent;//as for now
+                    }
+                    matches[index] = reach;
+                    index++;
+                }
             }
 
             return matches; //return result
@@ -153,17 +243,33 @@ namespace BoJo.Controllers
         public float CalcPreferenceMatch(StudentProfile SP, Institution CI)
         {
             double score = 0;
-            double possible_score = 8;
+            double possible_score = 13;
             if (SP.Location == CI.region || SP.Location=="Any") { score += 1; }
-            if (SP.School_Size == CI.size || SP.School_Size == "Any") { score += 1; }
+            if (SP.School_Size > CI.size || SP.School_Size == 100000) { score += 1; }
             if (CI.majors.Contains(SP.Major) || SP.Major == "Undecided") { score += 1; }
             if (SP.Competitive == CI.Competitive || SP.Competitive == "Any") { score += 1; }
             if (SP.SportsOveralLevel == CI.SportsOveralLevel || SP.SportsOveralLevel == "Any") { score += 1; }
-            if (SP.RatioStudentFaculty == CI.RatioStudentFaculty || SP.RatioStudentFaculty == 0) { score += 1; }
+            if (SP.RatioStudentFaculty > CI.RatioStudentFaculty || SP.RatioStudentFaculty == 0) { score += 1; }
             if ((SP.ProgramType == "Graduate" && CI.GraduateProgram == true) || SP.ProgramType == "Undergraduate") { score += 1; }
             if (SP.MaxCostAfterAid>=CI.average_cost_after_aid || SP.MaxCostAfterAid==0) { score += 1; }
+            
+            if (SP.greek_life == "Any" || (CI.greek_life == true && SP.greek_life=="Yes") || (CI.greek_life == false && SP.greek_life == "No")) { score += 1; }
+            if (CI.dorming_percentage <= SP.dorming_percentage) { score += 1; }
+            if (CI.climate == SP.climate) { score += 1; }
+            if (CI.control == SP.control) { score += 1; }
+            if (CI.majors.Contains(SP.minor) || SP.minor == "Undecided") { score += 1; }
+
 
             return (float)Math.Round(score / possible_score * 100, 2);
+        }
+        public float EstimateAdmission(float satScore, float actScore, float gpa, float sat25, float sat75, float act25, float act75, float gpa25, float gpa75)
+        {
+            float satNorm = (satScore - sat25) / (sat75 - sat25);
+            float actNorm = (actScore - act25) / (act75 - act25);
+            float gpaNorm = (gpa - gpa25) / (gpa75 - gpa25);
+
+            //return (satNorm + satNorm + gpaNorm) / 3;
+            return (float)Math.Round((0.4 * satNorm + 0.3 * actNorm + 0.3 * gpaNorm)*100,2);
         }
 
 
@@ -197,7 +303,7 @@ namespace BoJo.Controllers
                             current_SP.ProgramType = Reader["ProgramType"].ToString();
                             current_SP.Major = Reader["Major"].ToString();
                             current_SP.Location = Reader["Location"].ToString();
-                            current_SP.School_Size = Reader["School_Size"].ToString();
+                            current_SP.School_Size = (int)Reader["School_Size"];
                             current_SP.Competitive = Reader["competitive"].ToString();
                             current_SP.SportsOveralLevel = Reader["SportsOveralLevel"].ToString();
                             current_SP.MaxCostAfterAid = (int)Reader["MaxCostAfterAid"];
@@ -206,6 +312,11 @@ namespace BoJo.Controllers
                             current_SP.SAT_Score = (int)Reader["SAT_Score"];
                             current_SP.GPA = (float)(Double)Reader["GPA"];
                             current_SP.GPA_outof = (float)(Double)Reader["GPA_outof"];
+                            current_SP.dorming_percentage = (float)(Double)Reader["dorming_percentage"];
+                            current_SP.climate = Reader["climate"].ToString();
+                            current_SP.control = Reader["control"].ToString();
+                            current_SP.minor = Reader["minor"].ToString();
+                            current_SP.greek_life = Reader["greek_life"].ToString();
                         }
                     }
                     //conn

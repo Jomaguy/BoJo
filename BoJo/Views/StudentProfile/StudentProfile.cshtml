@@ -44,6 +44,17 @@
             <p class="text-muted">@if (SP.Major != null) { @SP.Major; }</p>
         </div>
     </div>
+    <div class="row pt-1">
+        <div class="col-6 mb-3">
+            <h6>Control</h6>
+            <p class="text-muted">@if (SP.control != null) { @SP.control; }</p>
+        </div>
+        <div class="col-6 mb-3">
+            <h6>Minor Preference</h6>
+            <p class="text-muted">@if (SP.minor != null) { @SP.minor; }</p>
+        </div>
+    </div>
+    <br />
     <h6>School Preferences</h6>
     <hr class="mt-0 mb-4">
     <div class="row pt-1">
@@ -53,7 +64,17 @@
         </div>
         <div class="col-6 mb-3">
             <h6>Size</h6>
-            <p class="text-muted">@if (SP.School_Size != null) { @SP.School_Size; }</p>
+            <p class="text-muted">@if (SP.School_Size != 0) { @SP.School_Size; }</p>
+        </div>
+    </div>
+    <div class="row pt-1">
+        <div class="col-6 mb-3">
+            <h6>Dorming %</h6>
+            <p class="text-muted">@if (SP.dorming_percentage != 0) {@SP.dorming_percentage ; }</p>
+        </div>
+        <div class="col-6 mb-3">
+            <h6>Climate</h6>
+            <p class="text-muted">@if (SP.climate != null) { @SP.climate; }</p>
         </div>
     </div>
     <div class="row pt-1">
@@ -74,6 +95,12 @@
         <div class="col-6 mb-3">
             <h6>Ratio Student:Faculty</h6>
             <p class="text-muted">@(SP.RatioStudentFaculty!=0 ? SP.RatioStudentFaculty+":1" : "Any")</p>
+        </div>
+    </div>
+    <div class="row pt-1">
+        <div class="col-6 mb-3">
+            <h6>Greek Life</h6>
+            <p class="text-muted">@(SP.greek_life!=null ? SP.greek_life : "Any")</p>
         </div>
     </div>
     <h6>Test Score</h6>

@@ -5,7 +5,7 @@ namespace BoJo.Models
 	{
 		public int UniversityNumber { get; set;}
 		public string UniversityName { get; set; }
-		public string Size { get; set; }
+		public int Size { get; set; }
 		public float TuitonAndFees { get; set;}
 		public string Overview { get; set;}
 		public float preference_match_percent { get; set; }

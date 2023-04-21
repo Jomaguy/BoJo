@@ -40,42 +40,82 @@
 					</select>
 				</div>
 			</div>
+			<br />
+			<div class="row pt-1">
+				<div class="col-6 mb-3">
+					<h6>School Type</h6>
+					<input type="radio" id="Any" value="Any" name="control" checked="checked">
+					<label for="Any">Any</label>
+
+					<input type="radio" id="Private" value="Private" name="control" @(SP.control=="Private" ? "checked='checked'":"")>
+ 					<label for="Private">Private</label>
+
+					<input type="radio" id="Public" value="Public" name="control" @(SP.control=="Public" ? "checked='checked'":"")>
+					<label for="Public">Public</label>
+				</div>
+				<div class="col-6 mb-3">
+					<h6>Minor</h6>
+					<select name="minor" >
+						<option selected>Undecided</option>
+						@foreach(string m in majors)
+						{
+							<!option @(@SP.minor==@m ? "selected" : "")>
+								@m
+							</!option>
+						}
+					</select>
+				</div>
+			</div>
 			<h6>School Preferences</h6>
 			<hr class="mt-0 mb-4">
 			<div class="row pt-1">
 				<div class="col-6 mb-3">
 					<h6>Location</h6>
-					<input type="radio" id="Any" value="Any" name="Location" checked="checked">
-					<label for="Any">Any</label>
-					<br />
-					<input type="radio" id="West" value="West" name="Location" @(SP.Location=="West" ? "checked='checked'":"")>
-					<label for="West">West</label>
-					<br />
-					<input type="radio" id="Mid-West" value="Mid-West" name="Location" @(SP.Location=="Mid-West" ? "checked='checked'":"")>
- 					<label for="Mid-West">Mid-West</label>
-					<br />
-					<input type="radio" id="South-West" value="South-West" name="Location" @(SP.Location=="South-West" ? "checked='checked'":"")>
- 					<label for="South-West">South-West</label>
-					<br />
-					<input type="radio" id="South-East" value="South-East" name="Location" @(SP.Location=="South-East" ? "checked='checked'":"")>
- 					<label for="South-East">South-East</label>
-					<br />
-					<input type="radio" id="North-East" value="North-East" name="Location" @(SP.Location=="North-East" ? "checked='checked'":"")>
- 					<label for="North-East">North-East</label>
+					<select name="Location"> 
+						<!option value="Any" selected>Any</!option>
+						<!option value="West" @(SP.Location=="West" ? "selected" : "")>West</!option>
+						<!option value="Mid-West" @(SP.Location=="Mid-West" ? "selected" : "")>Mid-West</!option>
+						<!option value="South-West" @(SP.Location=="South-West" ? "selected" : "")>South-West</!option>
+						<!option value="South-East" @(SP.Location=="South-East" ? "selected" : "")>South-East</!option>
+						<!option value="North-East" @(SP.Location=="North-East" ? "selected" : "")>North-East</!option>
+					</select>
 				</div>
 				<div class="col-6 mb-3">
 					<h6>School Size</h6>
-					<input type="radio" id="Any" value="Any" name="School_Size" checked="checked">
-					<label for="Any">Any</label>
-					<br />
-					<input type="radio" id="Small" value="Small" name="School_Size" @(SP.School_Size=="Small" ? "checked='checked'":"")>
-					<label for="Small">Small</label>
-					<br />
-					<input type="radio" id="Medium" value="Medium" name="School_Size" @(SP.School_Size=="Medium" ? "checked='checked'":"")>
- 					<label for="Medium">Medium</label>
-					<br />
-					<input type="radio" id="Large" value="Large" name="School_Size" @(SP.School_Size=="Large" ? "checked='checked'":"")>
- 					<label for="Large">Large</label>
+					<select name="School_Size"> 
+						<!option value="100000" selected>Any</!option>
+						<!option value="2000" @(@SP.School_Size==2000 ? "selected" : "")> &lt; 2000</!option>
+						<!option value="5000" @(@SP.School_Size==5000 ? "selected" : "")>&lt; 5000</!option>
+						<!option value="10000" @(@SP.School_Size==10000 ? "selected" : "")>&lt; 10000</!option>
+						<!option value="15000" @(@SP.School_Size==15000 ? "selected" : "")>&lt; 15000</!option>
+					</select>
+				</div>
+			</div>
+			<br />
+			<div class="row pt-1">
+				<div class="col-6 mb-3">
+					<h6>Dorming Percentage</h6>
+					<select name="dorming_percentage"> 
+						<!option value="100" selected>Any</!option>
+						<!option value="25" @(@SP.dorming_percentage==25 ? "selected" : "")> &lt; 25%</!option>
+						<!option value="50" @(@SP.dorming_percentage==50 ? "selected" : "")>&lt; 50%</!option>
+						<!option value="75" @(@SP.dorming_percentage==75 ? "selected" : "")>&lt; 75%</!option>
+					</select>
+				</div>
+				<div class="col-6 mb-3">
+					<h6>Climate</h6>
+					<select name="climate"> 
+						<!option value="Any" selected>Any</!option>
+						<!option value="Arctic" @(@SP.climate=="Arctic" ? "selected" : "")> Arctic</!option>
+						<!option value="Subarctic" @(@SP.climate=="Subarctic" ? "selected" : "")>Subarctic</!option>
+						<!option value="Subtropical" @(@SP.climate=="Subtropical" ? "selected" : "")>Subtropical</!option>
+						<!option value="Humid Subtropical" @(@SP.climate=="Humid Subtropical" ? "selected" : "")>Humid Subtropical</!option>
+						<!option value="Mediterranean" @(@SP.climate=="Mediterranean" ? "selected" : "")>Mediterranean</!option>
+						<!option value="Subtropical" @(@SP.climate=="Subtropical" ? "selected" : "")>Subtropical</!option>
+						<!option value="Desert" @(@SP.climate=="Desert" ? "selected" : "")>Desert</!option>
+						<!option value="Highland" @(@SP.climate=="Highland" ? "selected" : "")>Highland</!option>
+						<!option value="Tropical" @(@SP.climate=="Tropical" ? "selected" : "")>Tropical</!option>
+					</select>
 				</div>
 			</div>
 			<br />
@@ -124,6 +164,20 @@
 						<!option value="30" @(@SP.RatioStudentFaculty==30 ? "selected" : "")>30:1</!option>
 						<!option value="50" @(@SP.RatioStudentFaculty==35 ? "selected" : "")>35:1</!option>
 					</select>
+				</div>
+			</div>
+			<br />
+			<div class="row pt-1">
+				<div class="col-6 mb-3">
+					<h6>Greek Life</h6>
+					<input type="radio" id="Any" value="Any" name="greek_life" checked="checked">
+					<label for="Any">Any</label>
+
+					<input type="radio" id="Yes" value="Yes" name="greek_life" @(SP.greek_life=="Yes" ? "checked='checked'":"")>
+ 					<label for="Yes">Yes</label>
+
+					<input type="radio" id="No" value="No" name="greek_life" @(SP.greek_life=="No" ? "checked='checked'":"")>
+					<label for="No">No</label>
 				</div>
 			</div>
 			<h6>Test Score</h6>
