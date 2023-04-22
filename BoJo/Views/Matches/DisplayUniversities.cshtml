@@ -1,11 +1,17 @@
-﻿@model IEnumerable<BoJo.Models.UniversityMatches>
+﻿@model IList<BoJo.Models.UniversityMatches>
+<!--IEnumerable<BoJo.Models.UniversityMatches> -->
 
 <style>
 {
   box-sizing: border-box;
 }
 
-    .column {
+.FirstDiv{
+  background-color: #3898eb;
+  height: 40px;
+}
+
+.column {
   float: left;
   width: 50%;
   padding: 10px;
@@ -20,10 +26,126 @@
 }
 </style>
 
+<h1>Safety Schools</h1>
+<div class = "FirstDiv">
+</div>
 
-
-@foreach (var item in Model)
+@for (var i = 0; i < (Model.Count())/3;i++)
 {
+    
+    @if (Model[i].Size != 0)
+    {
+        <div class="row">
+            <div class="column">
+                <img src = " " alt= "Image not Found" > 
+            </div>
+            <div class="column">
+                <a href=@Url.Action("Institution","Institutions", new { id = Model[i].UniversityNumber })><h1>@Model[i].UniversityName</h1></a>
+                <h4>About</h4>
+                <p>
+                    @Model[i].Overview
+                </p>
+                <br>
+                <h5>School Size: @Model[i].Size</h5>
+                <h5>Total Cost: $@Model[i].TuitonAndFees</h5>
+                <h5>Percentage Match Preferences: @Model[i].preference_match_percent%</h5>
+                <h5>Admission Match Percentage: @Model[i].admission_match_percent%</h5>
+            </div>
+        </div> 
+
+    }  
+    else
+    {
+        <h4>NULL</h4>
+    }
+    <hr />
+}
+
+<h1>Fit Schools</h1>
+<div class = "FirstDiv">
+</div>
+
+@for (var i = ( (Model.Count())/3 ); i < ((Model.Count())/3 + Model.Count()/3);i++)
+{
+    
+
+    @if (Model[i].Size != 0)
+    {
+        <div class="row">
+            <div class="column">
+                <img src = " " alt= "Image not Found" > 
+            </div>
+            <div class="column">
+                <a href=@Url.Action("Institution","Institutions", new { id = Model[i].UniversityNumber })><h1>@Model[i].UniversityName</h1></a>
+                <h4>About</h4>
+                <p>
+                    @Model[i].Overview
+                </p>
+                <br>
+                <h5>School Size: @Model[i].Size</h5>
+                <h5>Total Cost: $@Model[i].TuitonAndFees</h5>
+                <h5>Percentage Match Preferences: @Model[i].preference_match_percent%</h5>
+                <h5>Admission Match Percentage: @Model[i].admission_match_percent%</h5>
+            </div>
+        </div> 
+
+    }  
+    else
+    {
+        <h4>NULL</h4>
+    }
+    <hr />
+}
+
+<h1>Reach Schools</h1>
+<div class = "FirstDiv">
+</div>
+
+@for (var i =((Model.Count())/3 + Model.Count()/3); i < Model.Count();i++)
+{
+    
+
+    @if (Model[i].Size != 0)
+    {
+        <div class="row">
+            <div class="column">
+                <img src = " " alt= "Image not Found" > 
+            </div>
+            <div class="column">
+                <a href=@Url.Action("Institution","Institutions", new { id = Model[i].UniversityNumber })><h1>@Model[i].UniversityName</h1></a>
+                <h4>About</h4>
+                <p>
+                    @Model[i].Overview
+                </p>
+                <br>
+                <h5>School Size: @Model[i].Size</h5>
+                <h5>Total Cost: $@Model[i].TuitonAndFees</h5>
+                <h5>Percentage Match Preferences: @Model[i].preference_match_percent%</h5>
+                <h5>Admission Match Percentage: @Model[i].admission_match_percent%</h5>
+            </div>
+        </div> 
+
+    }  
+    else
+    {
+        <h4>NULL</h4>
+    }
+    <hr />
+}
+
+
+
+
+
+
+
+
+
+<!--@foreach (var item in Model)
+{
+    <div class = "FirstDiv">
+    </div>
+
     @if (item.Size != 0)
     {
         <div class="row">
@@ -37,12 +159,13 @@
                     @item.Overview
                 </p>
                 <br>
-                <h5> School Size: @item.Size</h5>
-                <h5> Total Cost: $@item.TuitonAndFees</h5>
+                <h5>School Size: @item.Size</h5>
+                <h5>Total Cost: $@item.TuitonAndFees</h5>
                 <h5>Percentage Match Preferences: @item.preference_match_percent%</h5>
                 <h5>Admission Match Percentage: @item.admission_match_percent%</h5>
             </div>
         </div> 
+
     }  
     else
     {
@@ -51,6 +174,7 @@
     <hr />
 }
 
+-->
 <div id="chatbox"></div>
 
 @section Scripts {
