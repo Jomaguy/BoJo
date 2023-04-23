@@ -39,5 +39,6 @@
         public float GPA_75th { get; set; }
         public float preference_match_percent { get; set; }
         public float admission_match_percent { get; set; }
+        public string picture { get; set; }
     }
 }

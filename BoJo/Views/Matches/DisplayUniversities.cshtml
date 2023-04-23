@@ -1,6 +1,7 @@
 ﻿@model IList<BoJo.Models.UniversityMatches>
 <!--IEnumerable<BoJo.Models.UniversityMatches> -->
 
+
 <style>
 {
   box-sizing: border-box;
@@ -35,9 +36,28 @@
     
     @if (Model[i].Size != 0)
     {
+        <div class="card mb-3" style="max-width: 100%;cursor: pointer;" onclick="location.href='@Url.Action("Institution","Institutions", new { id = Model[i].UniversityNumber })';">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src = "data:image/jpeg;base64,@Model[i].picture" class="card-img" alt= "Image not Found">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <!--<a href=><h5 class="card-title">@Model[i].UniversityName</h5></a>-->
+                        <h5 class="card-title">@Model[i].UniversityName</h5>
+                        <p class="card-text">@Model[i].Overview</p>
+                        <p class="card-text">School Size: @Model[i].Size</p>
+                        <p class="card-text">Total Cost: $@Model[i].TuitonAndFees</p>
+                        <p class="card-text">Percentage Match Preferences: @Model[i].preference_match_percent%</p>
+                        <p class="card-text">Admission Match Percentage: @Model[i].admission_match_percent%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!---  
         <div class="row">
             <div class="column">
-                <img src = " " alt= "Image not Found" > 
+                <img src = "" alt= "Image not Found" > 
             </div>
             <div class="column">
                 <a href=@Url.Action("Institution","Institutions", new { id = Model[i].UniversityNumber })><h1>@Model[i].UniversityName</h1></a>
@@ -52,7 +72,7 @@
                 <h5>Admission Match Percentage: @Model[i].admission_match_percent%</h5>
             </div>
         </div> 
-
+        --->
     }  
     else
     {
@@ -71,24 +91,24 @@
 
     @if (Model[i].Size != 0)
     {
-        <div class="row">
-            <div class="column">
-                <img src = " " alt= "Image not Found" > 
+        <div class="card mb-3" style="max-width: 100%;cursor: pointer;" onclick="location.href='@Url.Action("Institution","Institutions", new { id = Model[i].UniversityNumber })';">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src = "data:image/jpeg;base64,@Model[i].picture" class="card-img" alt= "Image not Found">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <!--<a href=><h5 class="card-title">@Model[i].UniversityName</h5></a>-->
+                        <h5 class="card-title">@Model[i].UniversityName</h5>
+                        <p class="card-text">@Model[i].Overview</p>
+                        <p class="card-text">School Size: @Model[i].Size</p>
+                        <p class="card-text">Total Cost: $@Model[i].TuitonAndFees</p>
+                        <p class="card-text">Percentage Match Preferences: @Model[i].preference_match_percent%</p>
+                        <p class="card-text">Admission Match Percentage: @Model[i].admission_match_percent%</p>
+                    </div>
+                </div>
             </div>
-            <div class="column">
-                <a href=@Url.Action("Institution","Institutions", new { id = Model[i].UniversityNumber })><h1>@Model[i].UniversityName</h1></a>
-                <h4>About</h4>
-                <p>
-                    @Model[i].Overview
-                </p>
-                <br>
-                <h5>School Size: @Model[i].Size</h5>
-                <h5>Total Cost: $@Model[i].TuitonAndFees</h5>
-                <h5>Percentage Match Preferences: @Model[i].preference_match_percent%</h5>
-                <h5>Admission Match Percentage: @Model[i].admission_match_percent%</h5>
-            </div>
-        </div> 
-
+        </div>
     }  
     else
     {
@@ -107,24 +127,24 @@
 
     @if (Model[i].Size != 0)
     {
-        <div class="row">
-            <div class="column">
-                <img src = " " alt= "Image not Found" > 
+        <div class="card mb-3" style="max-width: 100%;cursor: pointer;" onclick="location.href='@Url.Action("Institution","Institutions", new { id = Model[i].UniversityNumber })';">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src = "data:image/jpeg;base64,@Model[i].picture" class="card-img" alt= "Image not Found">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <!--<a href=><h5 class="card-title">@Model[i].UniversityName</h5></a>-->
+                        <h5 class="card-title">@Model[i].UniversityName</h5>
+                        <p class="card-text">@Model[i].Overview</p>
+                        <p class="card-text">School Size: @Model[i].Size</p>
+                        <p class="card-text">Total Cost: $@Model[i].TuitonAndFees</p>
+                        <p class="card-text">Percentage Match Preferences: @Model[i].preference_match_percent%</p>
+                        <p class="card-text">Admission Match Percentage: @Model[i].admission_match_percent%</p>
+                    </div>
+                </div>
             </div>
-            <div class="column">
-                <a href=@Url.Action("Institution","Institutions", new { id = Model[i].UniversityNumber })><h1>@Model[i].UniversityName</h1></a>
-                <h4>About</h4>
-                <p>
-                    @Model[i].Overview
-                </p>
-                <br>
-                <h5>School Size: @Model[i].Size</h5>
-                <h5>Total Cost: $@Model[i].TuitonAndFees</h5>
-                <h5>Percentage Match Preferences: @Model[i].preference_match_percent%</h5>
-                <h5>Admission Match Percentage: @Model[i].admission_match_percent%</h5>
-            </div>
-        </div> 
-
+        </div>
     }  
     else
     {

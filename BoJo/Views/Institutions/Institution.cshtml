@@ -2,7 +2,12 @@
     Institution institution = (Institution)ViewData["institution"];
 }
 
+
+
 <div class="card-body p-4">
+    <div style="height:300px;overflow:hidden;">
+        <img src = "data:image/jpeg;base64,@institution.picture" class="card-img" alt= "Image not Found">
+    </div>
     <div style="text-align:center;">
         <h2>@institution.name</h2>
         <p>@institution.city @institution.state</p>

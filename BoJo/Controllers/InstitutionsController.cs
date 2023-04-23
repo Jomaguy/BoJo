@@ -52,6 +52,7 @@ namespace BoJo.Controllers
                         {
                             //get values
                             current_institution.institutionID = (int)Reader["institutionID"];
+                            current_institution.picture = Reader["picture"].ToString();
                             current_institution.name = Reader["name"].ToString();
                             current_institution.about = Reader["about"].ToString();
                             current_institution.address = Reader["address"].ToString();

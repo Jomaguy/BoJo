@@ -102,7 +102,8 @@ namespace BoJo.Controllers
                         float admissionchances = EstimateAdmission(SP.SAT_Score,SP.ACT_Score,SP.GPA, current_institution.SAT_25th, current_institution.SAT_75th, current_institution.ACT_25th, current_institution.ACT_75th, current_institution.GPA_25th, current_institution.ACT_75th);
                         current_institution.preference_match_percent = current_score;
                         current_institution.admission_match_percent = admissionchances;
-                        
+
+                        current_institution.picture = Reader["picture"].ToString();
                         //=============== INSERT IN CORRESPONDING CATEGORY ===========//
                         //safe
                         if (admissionchances >= 80.0)
@@ -187,6 +188,7 @@ namespace BoJo.Controllers
                     UniversityMatches safe = new UniversityMatches();
                     if (ss != null)
                     {
+                        safe.picture = ss.picture;
                         safe.UniversityNumber = ss.institutionID;
                         safe.UniversityName = ss.name;
                         safe.Size = ss.size;
@@ -205,6 +207,7 @@ namespace BoJo.Controllers
                     UniversityMatches fit = new UniversityMatches();
                     if (fs != null)
                     {
+                        fit.picture = fs.picture;
                         fit.UniversityNumber = fs.institutionID;
                         fit.UniversityName = fs.name;
                         fit.Size = fs.size;
@@ -223,6 +226,7 @@ namespace BoJo.Controllers
                     UniversityMatches reach = new UniversityMatches();
                     if (rs != null)
                     {
+                        reach.picture = rs.picture;
                         reach.UniversityNumber = rs.institutionID;
                         reach.UniversityName = rs.name;
                         reach.Size = rs.size;
