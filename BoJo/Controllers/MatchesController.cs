@@ -60,7 +60,13 @@ namespace BoJo.Controllers
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 //command get all the universities
-                SqlCommand MessageCmd = new SqlCommand("SELECT * FROM Institutions", conn);
+                SqlCommand MessageCmd = new SqlCommand("SELECT " +
+                    "institutionID, name, about, region, size, " +
+                    "Competitive, SportsOveralLevel, RatioStudentFaculty, GraduateProgram, " +
+                    "majors, total_cost, average_cost_after_aid, control, climate, " +
+                    "dorming_percentage, greek_life, SAT_25th, SAT_75th, ACT_25th, ACT_75th, " +
+                    "average_GPA " + 
+                    "FROM Institutions", conn);
 
                 conn.Open(); //open connection
                 using (SqlDataReader Reader = MessageCmd.ExecuteReader())
@@ -93,17 +99,20 @@ namespace BoJo.Controllers
                         current_institution.SAT_75th = (int)Reader["SAT_75th"];
                         current_institution.ACT_25th = (int)Reader["ACT_25th"];
                         current_institution.ACT_75th = (int)Reader["ACT_75th"];
-                        current_institution.GPA_25th = (float)(Double)Reader["GPA_25th"];
-                        current_institution.GPA_75th = (float)(Double)Reader["GPA_75th"];
+                        //current_institution.GPA_25th = (float)(Double)Reader["GPA_25th"];
+                        //current_institution.GPA_75th = (float)(Double)Reader["GPA_75th"];
+
+                        current_institution.average_GPA = (float)(Double)Reader["average_GPA"];
 
                         //============== CALCULATE ================//
                         //get match % for current institution
                         float current_score = CalcPreferenceMatch(SP, current_institution);
-                        float admissionchances = EstimateAdmission(SP.SAT_Score,SP.ACT_Score,SP.GPA, current_institution.SAT_25th, current_institution.SAT_75th, current_institution.ACT_25th, current_institution.ACT_75th, current_institution.GPA_25th, current_institution.ACT_75th);
+                        //float admissionchances = EstimateAdmission(SP.SAT_Score, SP.ACT_Score, SP.GPA, current_institution.SAT_25th, current_institution.SAT_75th, current_institution.ACT_25th, current_institution.ACT_75th, current_institution.GPA_25th, current_institution.ACT_75th);
+                        float admissionchances = EstimateAdmission(SP.SAT_Score, SP.ACT_Score, SP.GPA, current_institution.SAT_25th, current_institution.SAT_75th, current_institution.ACT_25th, current_institution.ACT_75th, current_institution.average_GPA);
                         current_institution.preference_match_percent = current_score;
                         current_institution.admission_match_percent = admissionchances;
 
-                        current_institution.picture = Reader["picture"].ToString();
+                        //current_institution.picture = Reader["picture"].ToString();
                         //=============== INSERT IN CORRESPONDING CATEGORY ===========//
                         //safe
                         if (admissionchances >= 80.0)
@@ -188,7 +197,7 @@ namespace BoJo.Controllers
                     UniversityMatches safe = new UniversityMatches();
                     if (ss != null)
                     {
-                        safe.picture = ss.picture;
+                        safe.picture = getPicture(ss.institutionID);
                         safe.UniversityNumber = ss.institutionID;
                         safe.UniversityName = ss.name;
                         safe.Size = ss.size;
@@ -207,7 +216,7 @@ namespace BoJo.Controllers
                     UniversityMatches fit = new UniversityMatches();
                     if (fs != null)
                     {
-                        fit.picture = fs.picture;
+                        fit.picture = getPicture(fs.institutionID);
                         fit.UniversityNumber = fs.institutionID;
                         fit.UniversityName = fs.name;
                         fit.Size = fs.size;
@@ -226,7 +235,7 @@ namespace BoJo.Controllers
                     UniversityMatches reach = new UniversityMatches();
                     if (rs != null)
                     {
-                        reach.picture = rs.picture;
+                        reach.picture = getPicture(rs.institutionID);
                         reach.UniversityNumber = rs.institutionID;
                         reach.UniversityName = rs.name;
                         reach.Size = rs.size;
@@ -266,14 +275,35 @@ namespace BoJo.Controllers
 
             return (float)Math.Round(score / possible_score * 100, 2);
         }
-        public float EstimateAdmission(float satScore, float actScore, float gpa, float sat25, float sat75, float act25, float act75, float gpa25, float gpa75)
+        public float EstimateAdmission(float satScore, float actScore, float gpa, float sat25, float sat75, float act25, float act75, float avgGPA)
         {
             float satNorm = (satScore - sat25) / (sat75 - sat25);
             float actNorm = (actScore - act25) / (act75 - act25);
-            float gpaNorm = (gpa - gpa25) / (gpa75 - gpa25);
-
+            //float gpaNorm = (gpa - gpa25) / (gpa75 - gpa25);
+            float gpaNorm = (float)((float)((gpa / 4) - (avgGPA / 4)) + 0.5);
             //return (satNorm + satNorm + gpaNorm) / 3;
             return (float)Math.Round((0.4 * satNorm + 0.3 * actNorm + 0.3 * gpaNorm)*100,2);
+        }
+
+        public string getPicture(int id)
+        {
+            string Base64 = "";
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT picture FROM institutions WHERE institutionId = @id", conn);
+                cmd.Parameters.AddWithValue("@id", id);
+
+
+                conn.Open();
+                using (SqlDataReader Reader = cmd.ExecuteReader())
+                {
+                    while (Reader.Read())
+                    {
+                        Base64 = Reader["picture"].ToString();
+                    }
+                }
+            }
+            return Base64;
         }
 
 
