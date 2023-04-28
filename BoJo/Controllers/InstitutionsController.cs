@@ -9,7 +9,7 @@ namespace BoJo.Controllers
     public class InstitutionsController : Controller
     {
         //sql connection string
-        protected static string connString = "Server=tcp:bojosqlserver.database.windows.net,1433;Initial Catalog=BoJo;Persist Security Info=False;User ID=warlynrn;Password=BoJo2023@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        protected static string connString = "Server=tcp:secondbojoserver.database.windows.net,1433;Initial Catalog=Bojo;Persist Security Info=False;User ID=Adminuser;Password=BoJo2023@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         public IActionResult Institution(int id)
         {
